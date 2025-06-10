@@ -1,0 +1,468 @@
+/* ================== */
+/* Basic Setup */
+/* ================== */
+body {
+  font-family: "Inter", sans-serif;
+  background-color: #080a0f;
+  color: #e0e0e0;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  padding-top: 80px;
+  overflow-x: hidden;
+}
+
+#background-video-techstock {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+  object-position: center center;
+  z-index: -1;
+  filter: brightness(0.4);
+}
+
+/* ================== */
+/* Navbar Styling */
+/* ================== */
+.navbar {
+  background-color: rgba(15, 20, 30, 0.75) !important;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  position: fixed;
+  width: 100%;
+  z-index: 1030;
+}
+
+.navbar .navbar-brand .logo-img {
+  height: 40px;
+}
+
+.navbar #navSearchFormGlobal {
+  max-width: 450px;
+}
+
+.navbar #navSearchFormGlobal .form-control {
+  background-color: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: white;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  width: 300px;
+}
+
+.navbar #navSearchFormGlobal .form-control::placeholder {
+  color: #a0a8b0;
+}
+
+.navbar #navSearchFormGlobal .bi-search {
+  color: #a0a8b0;
+}
+
+.navbar .navbar-nav .nav-link {
+  color: #d0d8e0;
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 1.2rem;
+  padding: 0.5rem 1rem;
+  margin: 0 0.35rem;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+  letter-spacing: 1px;
+}
+
+.navbar .navbar-nav .nav-link:hover {
+  color: #ffffff;
+  background-color: rgba(0, 209, 255, 0.15);
+}
+
+.navbar .navbar-nav .nav-link.active,
+.navbar .navbar-nav .show > .nav-link {
+  color: #080a0f;
+  background-color: #00d1ff;
+  font-weight: normal;
+}
+
+.navbar-toggler {
+  border-color: rgba(255, 255, 255, 0.2);
+}
+.navbar-toggler-icon {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28200, 208, 224, 0.8%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
+/* ================== */
+/* TechStock content*/
+/* ================== */
+.techstock-page-content {
+  position: relative;
+  z-index: 1;
+}
+
+.techstock-page-content .page-title {
+  font-family: "Bebas Neue", sans-serif;
+  color: #ffffff;
+  font-size: 3.5rem;
+  letter-spacing: 2px;
+  margin-bottom: 2.5rem !important;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.no-results-message-techstock {
+  color: #808a96;
+  font-size: 1.1rem;
+  padding: 1.5rem;
+  border: 1px dashed rgba(120, 150, 180, 0.3);
+  border-radius: 0.5rem;
+  background-color: rgba(20, 25, 40, 0.5);
+}
+
+/* Kartu Saham */
+.stock-card-item .stock-card {
+  background-color: rgba(18, 22, 33, 0.75);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  color: #c5cdd3;
+  border-radius: 10px;
+  transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+  height: 100%;
+  border-width: 1px;
+  border-style: solid;
+  border-color: rgba(120, 150, 180, 0.25);
+  display: flex;
+  flex-direction: column;
+}
+
+.stock-card-item .stock-card:hover {
+  transform: translateY(-5px) scale(1.02);
+}
+
+.stock-card-item .card.border-success-themed:hover {
+  border-color: #00d1ff !important;
+  box-shadow: 0 6px 25px rgba(0, 209, 255, 0.35) !important;
+}
+.stock-card-item .card.border-danger-themed:hover {
+  border-color: #ff66c4 !important;
+  box-shadow: 0 6px 25px rgba(255, 102, 196, 0.35) !important;
+}
+
+.stock-card-item .card-header {
+  background-color: rgba(30, 38, 58, 0.5);
+  border-bottom: 1px solid rgba(120, 150, 180, 0.2);
+  padding: 0.75rem 1rem;
+}
+
+.stock-logo,
+.stock-logo-placeholder {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: contain;
+  background-color: #fff;
+  padding: 2px;
+  flex-shrink: 0;
+}
+.stock-logo-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 1.4rem;
+  color: #707880;
+  background-color: #333d4f;
+  padding: 0;
+}
+
+.stock-card-item .stock-info-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.stock-card-item .stock-company-name {
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 1.5rem;
+  letter-spacing: 0.5px;
+  color: #ffffff;
+  line-height: 1.15;
+  margin-bottom: 0.05rem !important;
+}
+.stock-card-item .stock-symbol {
+  font-size: 0.8rem;
+  color: #808a96;
+  text-transform: uppercase;
+  line-height: 1.1;
+}
+
+.stock-card-item .card-body {
+  padding: 1rem;
+  flex-grow: 1;
+}
+
+.stock-price-large {
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 2.2rem;
+  color: #ffffff;
+  line-height: 1;
+}
+.stock-change-large {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+.stock-change-large .stock-change-absolute {
+  font-size: 0.8rem;
+  font-weight: normal;
+  opacity: 0.8;
+}
+
+.stock-divider {
+  border-color: rgba(120, 150, 180, 0.15);
+  margin-top: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.stock-details p {
+  font-size: 0.8rem;
+  color: #b0b8c0;
+  margin-bottom: 0.3rem;
+  line-height: 1.4;
+}
+.stock-details p strong {
+  color: #d0d8e0;
+  min-width: 90px;
+  display: inline-block;
+}
+
+.stock-card-item .card-text .text-success-themed,
+.stock-card-item .card-header .text-success-themed {
+  color: #00d1ff !important;
+  font-weight: 600;
+}
+.stock-card-item .card-text .text-danger-themed,
+.stock-card-item .card-header .text-danger-themed {
+  color: #ff66c4 !important;
+  font-weight: 600;
+}
+.stock-card-item .card.border-success-themed {
+  border-color: rgba(0, 209, 255, 0.6) !important;
+}
+.stock-card-item .card.border-danger-themed {
+  border-color: rgba(255, 102, 196, 0.6) !important;
+}
+
+.stock-card-item .card-footer {
+  background-color: rgba(30, 38, 58, 0.3);
+  border-top: 1px solid rgba(120, 150, 180, 0.2);
+  padding: 0.5rem 1rem;
+}
+
+.stock-website-link {
+  font-family: "Inter", sans-serif;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 0.35rem 0.85rem;
+  border-radius: 15px;
+  transition: all 0.3s ease;
+  border-width: 1px;
+  border-style: solid;
+  text-decoration: none;
+}
+
+.stock-website-link.link-positive {
+  color: #00d1ff;
+  background-color: rgba(0, 209, 255, 0.1);
+  border-color: rgba(0, 209, 255, 0.3);
+}
+.stock-website-link.link-positive:hover {
+  background-color: rgba(0, 209, 255, 0.25);
+  color: #ffffff;
+  border-color: rgba(0, 209, 255, 0.7);
+}
+
+.stock-website-link.link-negative {
+  color: #ff66c4;
+  background-color: rgba(255, 102, 196, 0.1);
+  border-color: rgba(255, 102, 196, 0.3);
+}
+.stock-website-link.link-negative:hover {
+  background-color: rgba(255, 102, 196, 0.25);
+  color: #ffffff;
+  border-color: rgba(255, 102, 196, 0.7);
+}
+
+/* ================== */
+/* Footer Styling */
+/* ================== */
+.footer {
+  background-color: rgba(10, 10, 15, 0.75);
+  color: #a0a8b0;
+  padding-top: 3rem;
+  padding-bottom: 1.5rem;
+  border-top: 1px solid rgba(120, 150, 180, 0.15);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  position: relative;
+  z-index: 1;
+}
+
+.footer p,
+.footer .list-unstyled a {
+  font-family: "Inter", sans-serif;
+  font-size: 0.9rem;
+}
+
+.footer .footer-logos-container img.footer-logo-main {
+  max-width: 150px;
+  margin: 0 5px;
+}
+.footer .footer-logos-container img.footer-logo-km {
+  max-width: 80px;
+  margin: 0 5px;
+}
+.footer p.footer-description-text {
+  max-width: 400px;
+  color: #b0b8c0 !important;
+  font-size: 0.8rem;
+}
+
+.footer .footer-title {
+  font-family: "Bebas Neue", sans-serif;
+  font-weight: normal;
+  color: #e0e0e0 !important;
+  font-size: 1.5rem;
+  letter-spacing: 1px;
+  margin-bottom: 1rem !important;
+}
+
+.social-icons-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.social-icons-row {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+.social-icons-row:last-child {
+  margin-bottom: 0;
+}
+
+.social-icons-row a i.bi {
+  color: #b0b8c0 !important;
+  transition: color 0.3s ease;
+  font-size: 1.3rem !important;
+}
+.social-icons-row a:hover i.bi {
+  color: #00d1ff !important;
+}
+
+.listfoot ul {
+  padding-left: 0;
+}
+.listfoot li {
+  margin-bottom: 0.4rem;
+}
+.listfoot a {
+  font-family: "Bebas Neue", sans-serif;
+  color: #b0b8c0 !important;
+  transition: color 0.3s ease;
+  font-size: 1.1rem;
+  letter-spacing: 0.5px;
+  padding: 0.2rem 0;
+  display: inline-block;
+}
+.listfoot a:hover {
+  color: #00d1ff !important;
+}
+
+.footer small.footer-copyright-text {
+  color: #88929b;
+  font-size: 0.75rem;
+  line-height: 1.4;
+  font-family: "Inter", sans-serif;
+}
+
+/* ================== */
+/* Responsive */
+/* ================== */
+@media (max-width: 991.98px) {
+  .navbar #navSearchFormGlobal {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    max-width: 300px;
+    width: 100%;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+  .navbar #navSearchFormGlobal .form-control {
+    width: 100%;
+  }
+  .navbar .navbar-nav {
+    align-items: center;
+  }
+  .navbar .navbar-nav .nav-item {
+    margin: 0.25rem 0;
+  }
+
+  .techstock-page-content .page-title {
+    font-size: 2.8rem;
+  }
+}
+
+@media (max-width: 768px) {
+  html {
+    overflow-x: hidden;
+  }
+  body {
+    padding-top: 60px;
+  }
+
+  .techstock-page-content .page-title {
+    font-size: 2.2rem;
+    margin-bottom: 2rem !important;
+  }
+
+  .stock-card-item .stock-company-name {
+    font-size: 1.3rem;
+    line-height: 1.1;
+  }
+  .stock-card-item .stock-symbol {
+    line-height: 1.1;
+  }
+  .stock-price-large {
+    font-size: 1.8rem;
+  }
+  .stock-change-large {
+    font-size: 1rem;
+  }
+  .stock-details p {
+    font-size: 0.75rem;
+  }
+  .stock-details p strong {
+    min-width: 80px;
+  }
+}
+
+@media (max-width: 576px) {
+  .techstock-page-content .page-title {
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem !important;
+  }
+
+  .stock-card-item .stock-company-name {
+    font-size: 1.15rem;
+  }
+  .stock-price-large {
+    font-size: 1.6rem;
+  }
+  .stock-details p {
+    font-size: 0.7rem;
+  }
+  .stock-details p strong {
+    min-width: 70px;
+  }
+}
