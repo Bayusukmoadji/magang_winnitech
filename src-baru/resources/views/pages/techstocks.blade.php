@@ -27,7 +27,7 @@
     </video>
     <nav class="navbar navbar-expand-lg py-2 fixed-top">
       <div class="container">
-        <a class="navbar-brand" href="/index">
+        <a class="navbar-brand" href="/">
           <img
             src="../assets/img/winntech.png"
             alt="Winntech Logo"
@@ -71,8 +71,8 @@
                 >News</a
               >
             </li>
-            <li class="nav-item active">
-              <a class="nav-link" href="/techstocks">TechStocks</a>
+            <li class="nav-item">
+              <a class="nav-link active" href="/techstocks">TechStocks</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="/launches">Launches</a>
@@ -146,9 +146,9 @@
             <h5 class="fw-bold text-start footer-title">CATEGORIES</h5>
             <div class="listfoot">
               <ul class="list-unstyled">
-                <li><a href="../pages/news.html">News</a></li>
-                <li><a href="../pages/techstocks.html">TechStocks</a></li>
-                <li><a href="../pages/launches.html">Launches</a></li>
+                <li><a href="/news">News</a></li>
+                <li><a href="/techstocks">TechStocks</a></li>
+                <li><a href="/launches">Launches</a></li>
               </ul>
             </div>
           </div>

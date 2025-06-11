@@ -31,7 +31,7 @@
  ===================== -->
     <nav class="navbar navbar-expand-lg py-2 fixed-top">
       <div class="container">
-        <a class="navbar-brand" href="/index">
+        <a class="navbar-brand" href="/">
           <img
             src="../assets/img/winntech.png"
             alt="Winntech Logo"
@@ -78,8 +78,8 @@
             <li class="nav-item">
               <a class="nav-link" href="/techstocks">TechStocks</a>
             </li>
-            <li class="nav-item active">
-              <a class="nav-link" href="/launches">Launches</a>
+            <li class="nav-item ">
+              <a class="nav-link active" href="/launches">Launches</a>
             </li>
           </ul>
         </div>
@@ -124,7 +124,7 @@
             </div>
             <div class="card-footer launch-card-footer">
               <a
-                href="detailLaunches.html?product=macbook-pro-m4"
+                href="/detailLaunches"
                 class="btn btn-sm btn-secondary-themed w-100"
                 >Read More <i class="bi bi-arrow-right-short"></i
               ></a>
@@ -152,7 +152,7 @@
             </div>
             <div class="card-footer launch-card-footer">
               <a
-                href="detailLaunches.html?product=galaxy-s26-ultra"
+                href="/detailLaunches"
                 class="btn btn-sm btn-secondary-themed w-100"
                 >Read More <i class="bi bi-arrow-right-short"></i
               ></a>
@@ -180,7 +180,7 @@
             </div>
             <div class="card-footer launch-card-footer">
               <a
-                href="detailLaunches.html?product=rtx-6090"
+                href="/detailLaunches"
                 class="btn btn-sm btn-secondary-themed w-100"
                 >Read More <i class="bi bi-arrow-right-short"></i
               ></a>
@@ -209,7 +209,7 @@
             </div>
             <div class="card-footer launch-card-footer">
               <a
-                href="detailLaunches.html?product=pixel-fold-2"
+                href="/detailLaunches"
                 class="btn btn-sm btn-secondary-themed w-100"
                 >Read More <i class="bi bi-arrow-right-short"></i
               ></a>
@@ -240,7 +240,7 @@
             </div>
             <div class="card-footer launch-card-footer">
               <a
-                href="detailLaunches.html?product=playstation-6"
+                href="/detailLaunches"
                 class="btn btn-sm btn-secondary-themed w-100"
                 >Read More <i class="bi bi-arrow-right-short"></i
               ></a>
@@ -269,7 +269,7 @@
             </div>
             <div class="card-footer launch-card-footer">
               <a
-                href="detailLaunches.html?product=meta-quest-4"
+                href="/detailLaunches"
                 class="btn btn-sm btn-secondary-themed w-100"
                 >Read More <i class="bi bi-arrow-right-short"></i
               ></a>
@@ -298,7 +298,7 @@
             </div>
             <div class="card-footer launch-card-footer">
               <a
-                href="detailLaunches.html?product=dji-mavic-4"
+                href="/detailLaunches"
                 class="btn btn-sm btn-secondary-themed w-100"
                 >Read More <i class="bi bi-arrow-right-short"></i
               ></a>
@@ -327,7 +327,7 @@
             </div>
             <div class="card-footer launch-card-footer">
               <a
-                href="detailLaunches.html?product=tesla-model-c"
+                href="/detailLaunches"
                 class="btn btn-sm btn-secondary-themed w-100"
                 >Read More <i class="bi bi-arrow-right-short"></i
               ></a>
@@ -356,7 +356,7 @@
             </div>
             <div class="card-footer launch-card-footer">
               <a
-                href="detailLaunches.html?product=cerebrum-os"
+                href="/detailLaunches"
                 class="btn btn-sm btn-secondary-themed w-100"
                 >Read More <i class="bi bi-arrow-right-short"></i
               ></a>
@@ -425,9 +425,9 @@
             <h5 class="fw-bold text-start footer-title">CATEGORIES</h5>
             <div class="listfoot">
               <ul class="list-unstyled">
-                <li><a href="../pages/news.html">News</a></li>
-                <li><a href="../pages/techstocks.html">TechStocks</a></li>
-                <li><a href="../pages/launches.html">Launches</a></li>
+                <li><a href="/news">News</a></li>
+                <li><a href="/techstocks">TechStocks</a></li>
+                <li><a href="/launches">Launches</a></li>
               </ul>
             </div>
           </div>
