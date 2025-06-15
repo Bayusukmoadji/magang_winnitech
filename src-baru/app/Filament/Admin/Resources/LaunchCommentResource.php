@@ -34,7 +34,7 @@ class LaunchCommentResource extends Resource
             ->schema([
                 Forms\Components\Select::make('launch_product_id')
                     ->label('Launch')
-                    ->relationship('launch', 'title') // relasi 'article' sesuai method di model NewsComment
+                    ->relationship('launch', 'title')
                     ->required(),
                 Forms\Components\TextInput::make('name')
                     ->required(),

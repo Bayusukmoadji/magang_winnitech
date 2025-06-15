@@ -86,398 +86,122 @@
     </nav>
 
     <!--  -->
-    <section class="container-lg my-5 text-white">
-      <div
+   <section class="container-lg my-5 text-white">
+    {{-- ================================================= --}}
+    {{--               BAGIAN CAROUSEL (FEATURED)            --}}
+    {{-- ================================================= --}}
+    <div
         class="position-relative mb-4 mx-auto rounded-4 overflow-hidden"
         style="max-width: 900px; height: 500px"
-      >
+    >
         <div
-          id="heroCarousel"
-          class="carousel slide h-100"
-          data-bs-ride="carousel"
-          data-bs-interval="4000"
+            id="heroCarousel"
+            class="carousel slide h-100"
+            data-bs-ride="carousel"
+            data-bs-interval="4000"
         >
-          <div class="carousel-inner h-100">
-            <a href="/detailNews">
-              <div class="carousel-item active h-100 position-relative">
-                <img
-                  src="../assets/img/image.png"
-                  class="d-block w-100 h-100 object-fit-cover"
-                  alt="Featured News Image 1"
-                />
-                <div
-                  class="card-img-overlay flex-column justify-content-end align-items-start p-3 gradient-overlay"
-                >
-                  <h5 class="text-white mb-3 fw-semibold">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Quae alias placeat dolorem laborum commodi excepturi,
-                    laudantium aperiam dolores quidem vitae voluptates natus
-                    quibusdam rerum non, ipsum labore nemo quo. Asperiores!
-                  </h5>
-                  <p class="text-white small m-0">
-                    Oleh: <strong>Admin</strong> | 2 Mei 2025
-                  </p>
-                </div>
-              </div>
-            </a>
-            <a href="/detailNews">
-              <div class="carousel-item h-100 position-relative">
-                <img
-                  src="../assets/img/image.png"
-                  class="d-block w-100 h-100 object-fit-cover"
-                  alt="..."
-                />
-                <div
-                  class="card-img-overlay flex-column justify-content-end align-items-start p-3 gradient-overlay"
-                >
-                  <h5 class="text-white mb-3 fw-semibold">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Dolorum nulla rem vel illo delectus quae, quos accusamus est
-                    cum dicta cupiditate quisquam architecto, maiores assumenda
-                    animi! Mollitia magni minima fugit!
-                  </h5>
-                  <p class="text-white small m-0">
-                    Oleh: <strong>Admin</strong> | 2 Mei 2025
-                  </p>
-                </div>
-              </div>
-            </a>
-            <a href="/detailNews">
-              <div class="carousel-item h-100 position-relative">
-                <img
-                  src="../assets/img/image.png"
-                  class="d-block w-100 h-100 object-fit-cover"
-                  alt="..."
-                />
-                <div
-                  class="card-img-overlay flex-column justify-content-end align-items-start p-3 gradient-overlay"
-                >
-                  <h5 class="text-white mb-3 fw-semibold">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Dolorum nulla rem vel illo delectus quae, quos accusamus est
-                    animi! Mollitia magni minima fugit!
-                  </h5>
-                  <p class="text-white small m-0">
-                    Oleh: <strong>Admin</strong> | 2 Mei 2025
-                  </p>
-                </div>
-              </div>
-            </a>
-          </div>
+            <div class="carousel-inner h-100">
 
-          <button
-            class="carousel-control-prev"
-            type="button"
-            data-bs-target="#heroCarousel"
-            data-bs-slide="prev"
-          >
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
-          </button>
-          <button
-            class="carousel-control-next"
-            type="button"
-            data-bs-target="#heroCarousel"
-            data-bs-slide="next"
-          >
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
-          </button>
-        </div>
-      </div>
+                {{-- Mulai perulangan untuk berita featured --}}
+                @foreach ($featuredArticles as $featured)
+                    {{-- Cek apakah ini item pertama untuk menambahkan class 'active' --}}
+                    <div class="carousel-item h-100 position-relative {{ $loop->first ? 'active' : '' }}">
+                        {{-- Link ke detail berita menggunakan slug --}}
+                        <a href="/news/{{ $featured->slug }}">
+                            {{-- Gambar berita, gunakan helper asset() untuk path yang benar --}}
+                            <img
+                                src="{{ asset('storage/' . $featured->image_path) }}"
+                                class="d-block w-100 h-100 object-fit-cover"
+                                alt="{{ $featured->title }}"
+                            />
+                            <div
+                                class="card-img-overlay flex-column justify-content-end align-items-start p-3 gradient-overlay"
+                            >
+                                {{-- Judul Berita --}}
+                                <h5 class="text-white mb-3 fw-semibold">
+                                    {{ $featured->title }}
+                                </h5>
+                                {{-- Author dan Tanggal Publikasi --}}
+                                <p class="text-white small m-0">
+                                    Oleh: <strong>{{ $featured->author_name }}</strong> | {{ $featured->publication_date->format('j F Y') }}
+                                </p>
+                            </div>
+                        </a>
+                    </div>
+                @endforeach
+                {{-- Akhir perulangan --}}
 
-      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-4">
-        <div class="col">
-          <div class="card h-100 bg-dark text-white rounded-4">
-            <div class="news-card-image-container">
-              <a href="/detailNews">
-                <img
-                  src="../assets/img/image.png"
-                  class="card-img-top rounded-top-4"
-                  alt="News Grid Image 1"
-                />
-              </a>
-              <div class="news-date-badge">2 Mei 2025</div>
             </div>
-            <div class="card-body p-2">
-              <p class="card-text fw-semibold">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Necessitatibus hic officia nesciunt nam dignissimos blanditiis
-                voluptates in sequi doloribus! Consequuntur veniam maxime,
-                tempora dolores qui nesciunt id? Autem, illo quia!
-              </p>
-              <p class="deskripsigrid">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Necessitatibus hic officia nesciunt nam dignissimos blanditiis
-                voluptates in sequi doloribus! Consequuntur veniam maxime,
-                tempora dolores qui nesciunt id? Autem, illo quia!
-              </p>
-              <p class="news-author-line small mb-0">
-                Author: <strong>Admin</strong>
-              </p>
-            </div>
-          </div>
-        </div>
-        <div class="col">
-          <div class="card h-100 bg-dark text-white rounded-4">
-            <div class="news-card-image-container">
-              <a href="/detailNews">
-                <img
-                  src="../assets/img/image.png"
-                  class="card-img-top rounded-top-4"
-                  alt="News Grid Image 2"
-                />
-              </a>
-              <div class="news-date-badge">2 Mei 2025</div>
-            </div>
-            <div class="card-body p-2">
-              <p class="card-text fw-semibold">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Necessitatibus hic officia nesciunt nam dignissimos blanditiis
-                voluptates in sequi doloribus! Consequuntur veniam maxime,
-                tempora dolores qui nesciunt id? Autem, illo quia!
-              </p>
-              <p class="deskripsigrid">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Necessitatibus hic officia nesciunt nam dignissimos blanditiis
-                voluptates in sequi doloribus! Consequuntur veniam maxime,
-                tempora dolores qui nesciunt id? Autem, illo quia!
-              </p>
-              <p class="news-author-line small mb-0">
-                Author: <strong>Admin</strong>
-              </p>
-            </div>
-          </div>
-        </div>
-        <div class="col">
-          <div class="card h-100 bg-dark text-white rounded-4">
-            <div class="news-card-image-container">
-              <a href="/detailNews">
-                <img
-                  src="../assets/img/image.png"
-                  class="card-img-top rounded-top-4"
-                  alt="News Grid Image 3"
-                />
-              </a>
-              <div class="news-date-badge">2 Mei 2025</div>
-            </div>
-            <div class="card-body p-2">
-              <p class="card-text fw-semibold">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Necessitatibus hic officia nesciunt nam dignissimos blanditiis
-                voluptates in sequi doloribus! Consequuntur veniam maxime,
-                tempora dolores qui nesciunt id? Autem, illo quia!
-              </p>
-              <p class="deskripsigrid">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Necessitatibus hic officia nesciunt nam dignissimos blanditiis
-                voluptates in sequi doloribus! Consequuntur veniam maxime,
-                tempora dolores qui nesciunt id? Autem, illo quia!
-              </p>
-              <p class="news-author-line small mb-0">
-                Author: <strong>Admin</strong>
-              </p>
-            </div>
-          </div>
-        </div>
-        <div class="col">
-          <div class="card h-100 bg-dark text-white rounded-4">
-            <div class="news-card-image-container">
-              <a href="/detailNews">
-                <img
-                  src="../assets/img/image.png"
-                  class="card-img-top rounded-top-4"
-                  alt="News Grid Image 3"
-                />
-              </a>
-              <div class="news-date-badge">2 Mei 2025</div>
-            </div>
-            <div class="card-body p-2">
-              <p class="card-text fw-semibold">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Necessitatibus hic officia nesciunt nam dignissimos blanditiis
-                voluptates in sequi doloribus! Consequuntur veniam maxime,
-                tempora dolores qui nesciunt id? Autem, illo quia!
-              </p>
-              <p class="deskripsigrid">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Necessitatibus hic officia nesciunt nam dignissimos blanditiis
-                voluptates in sequi doloribus! Consequuntur veniam maxime,
-                tempora dolores qui nesciunt id? Autem, illo quia!
-              </p>
-              <p class="news-author-line small mb-0">
-                Author: <strong>Admin</strong>
-              </p>
-            </div>
-          </div>
-        </div>
-        <div class="col">
-          <div class="card h-100 bg-dark text-white rounded-4">
-            <div class="news-card-image-container">
-              <a href="/detailNews">
-                <img
-                  src="../assets/img/image.png"
-                  class="card-img-top rounded-top-4"
-                  alt="News Grid Image 3"
-                />
-              </a>
-              <div class="news-date-badge">2 Mei 2025</div>
-            </div>
-            <div class="card-body p-2">
-              <p class="card-text fw-semibold">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Necessitatibus hic officia nesciunt nam dignissimos blanditiis
-                voluptates in sequi doloribus! Consequuntur veniam maxime,
-                tempora dolores qui nesciunt id? Autem, illo quia!
-              </p>
-              <p class="deskripsigrid">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Necessitatibus hic officia nesciunt nam dignissimos blanditiis
-                voluptates in sequi doloribus! Consequuntur veniam maxime,
-                tempora dolores qui nesciunt id? Autem, illo quia!
-              </p>
-              <p class="news-author-line small mb-0">
-                Author: <strong>Admin</strong>
-              </p>
-            </div>
-          </div>
-        </div>
-        <div class="col">
-          <div class="card h-100 bg-dark text-white rounded-4">
-            <div class="news-card-image-container">
-              <a href="/detailNews">
-                <img
-                  src="../assets/img/image.png"
-                  class="card-img-top rounded-top-4"
-                  alt="News Grid Image 3"
-                />
-              </a>
-              <div class="news-date-badge">2 Mei 2025</div>
-            </div>
-            <div class="card-body p-2">
-              <p class="card-text fw-semibold">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Necessitatibus hic officia nesciunt nam dignissimos blanditiis
-                voluptates in sequi doloribus! Consequuntur veniam maxime,
-                tempora dolores qui nesciunt id? Autem, illo quia!
-              </p>
-              <p class="deskripsigrid">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Necessitatibus hic officia nesciunt nam dignissimos blanditiis
-                voluptates in sequi doloribus! Consequuntur veniam maxime,
-                tempora dolores qui nesciunt id? Autem, illo quia!
-              </p>
-              <p class="news-author-line small mb-0">
-                Author: <strong>Admin</strong>
-              </p>
-            </div>
-          </div>
-        </div>
-        <div class="col">
-          <div class="card h-100 bg-dark text-white rounded-4">
-            <div class="news-card-image-container">
-              <a href="/detailNews">
-                <img
-                  src="../assets/img/image.png"
-                  class="card-img-top rounded-top-4"
-                  alt="News Grid Image 3"
-                />
-              </a>
-              <div class="news-date-badge">2 Mei 2025</div>
-            </div>
-            <div class="card-body p-2">
-              <p class="card-text fw-semibold">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Necessitatibus hic officia nesciunt nam dignissimos blanditiis
-                voluptates in sequi doloribus! Consequuntur veniam maxime,
-                tempora dolores qui nesciunt id? Autem, illo quia!
-              </p>
-              <p class="deskripsigrid">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Necessitatibus hic officia nesciunt nam dignissimos blanditiis
-                voluptates in sequi doloribus! Consequuntur veniam maxime,
-                tempora dolores qui nesciunt id? Autem, illo quia!
-              </p>
-              <p class="news-author-line small mb-0">
-                Author: <strong>Admin</strong>
-              </p>
-            </div>
-          </div>
-        </div>
-        <div class="col">
-          <div class="card h-100 bg-dark text-white rounded-4">
-            <div class="news-card-image-container">
-              <a href="/detailNews">
-                <img
-                  src="../assets/img/image.png"
-                  class="card-img-top rounded-top-4"
-                  alt="News Grid Image 3"
-                />
-              </a>
-              <div class="news-date-badge">2 Mei 2025</div>
-            </div>
-            <div class="card-body p-2">
-              <p class="card-text fw-semibold">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Necessitatibus hic officia nesciunt nam dignissimos blanditiis
-                voluptates in sequi doloribus! Consequuntur veniam maxime,
-                tempora dolores qui nesciunt id? Autem, illo quia!
-              </p>
-              <p class="deskripsigrid">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Necessitatibus hic officia nesciunt nam dignissimos blanditiis
-                voluptates in sequi doloribus! Consequuntur veniam maxime,
-                tempora dolores qui nesciunt id? Autem, illo quia!
-              </p>
-              <p class="news-author-line small mb-0">
-                Author: <strong>Admin</strong>
-              </p>
-            </div>
-          </div>
-        </div>
 
-        <div class="col">
-          <div class="card h-100 bg-dark text-white rounded-4">
-            <div class="news-card-image-container">
-              <a href="/detailNews">
-                <img
-                  src="../assets/img/image.png"
-                  class="card-img-top rounded-top-4"
-                  alt="News Grid Image 16"
-                />
-              </a>
-              <div class="news-date-badge">2 Mei 2025</div>
-            </div>
-            <div class="card-body p-2">
-              <p class="card-text fw-semibold">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Necessitatibus hic officia nesciunt nam dignissimos blanditiis
-                voluptates in sequi doloribus! Consequuntur veniam maxime,
-                tempora dolores qui nesciunt id? Autem, illo quia!
-              </p>
-              <p class="deskripsigrid">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Necessitatibus hic officia nesciunt nam dignissimos blanditiis
-                voluptates in sequi doloribus! Consequuntur veniam maxime,
-                tempora dolores qui nesciunt id? Autem, illo quia!
-              </p>
-              <p class="news-author-line small mb-0">
-                Author: <strong>Admin</strong>
-              </p>
-            </div>
-          </div>
+            <button
+                class="carousel-control-prev"
+                type="button"
+                data-bs-target="#heroCarousel"
+                data-bs-slide="prev"
+            >
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button
+                class="carousel-control-next"
+                type="button"
+                data-bs-target="#heroCarousel"
+                data-bs-slide="next"
+            >
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
         </div>
-      </div>
-      <div class="text-center mt-4 pt-2 pb-4">
-        <button
-          id="loadMoreButton"
-          class="btn btn-outline-light px-4 py-2"
-          style="display: none"
-        >
-          <span class="fw-semibold">LOAD MORE</span>
-        </button>
-      </div>
-    </section>
+    </div>
+
+    {{-- ================================================= --}}
+    {{--               BAGIAN GRID CARD (BERITA LAIN)        --}}
+    {{-- ================================================= --}}
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-4">
+
+        {{-- Mulai perulangan untuk berita biasa --}}
+        @foreach ($articles as $article)
+            <div class="col">
+                <div class="card h-100 bg-dark text-white rounded-4">
+                    <div class="news-card-image-container">
+                        {{-- Link ke detail berita --}}
+                        <a href="{{ route('front.details', $article->slug)}}">
+                            {{-- Gambar berita --}}
+                            <img
+                                src="{{ asset('storage/' . $article->image_path) }}"
+                                class="card-img-top rounded-top-4"
+                                alt="{{ $article->title }}"
+                            />
+                        </a>
+                        {{-- Tanggal Publikasi --}}
+                        <div class="news-date-badge">{{ $article->publication_date->format('j F Y') }}</div>
+                    </div>
+                    <div class="card-body p-2">
+                        {{-- Judul Berita --}}
+                        <p class="card-text fw-semibold">
+                            {{ $article->title }}
+                        </p>
+                        {{-- Excerpt/Ringkasan Berita --}}
+                        <p class="deskripsigrid">
+                            {{ $article->excerpt }}
+                        </p>
+                        {{-- Author Berita --}}
+                        <p class="news-author-line small mb-0">
+                            Author: <strong>{{ $article->author_name }}</strong>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        @endforeach
+        {{-- Akhir perulangan --}}
+
+    </div>
+
+    <div class="text-center mt-4 pt-2 pb-4">
+        {{-- Tampilkan link paginasi --}}
+        {{ $articles->links() }}
+    </div>
+</section>
 
     <!--  -->
     <footer class="footer pt-5 border-top">

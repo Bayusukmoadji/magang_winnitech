@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\MorphMany; // Import MorphMany
 
 class NewsArticle extends Model
@@ -30,9 +31,9 @@ class NewsArticle extends Model
     /**
      * Get all of the article's comments.
      */
-    public function comments(): MorphMany
+    public function comments(): HasMany
     {
-        return $this->morphMany(NewsComment::class, 'commentable');
+        return $this->hasMany(NewsComment::class);
     }
 
     /**

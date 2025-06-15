@@ -2,7 +2,8 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Winntech - News Article Title</title>
+    {{-- Judul halaman sekarang dinamis sesuai judul artikel --}}
+    <title>Winntech - contoh</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
@@ -18,178 +19,91 @@
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
     />
-    <link rel="stylesheet" href="../assets/css/detailNews.css" />
+    {{-- Gunakan helper asset() untuk path CSS yang benar --}}
+    <link rel="stylesheet" href="{{ asset('assets/css/detailNews.css') }}" />
   </head>
   <body>
     <video autoplay muted loop playsinline id="background-video-detail-news">
-      <source src="../assets/img/bg2.mp4" type="video/mp4" />
+      <source src="{{ asset('assets/img/bg2.mp4') }}" type="video/mp4" />
       Your browser does not support the video tag.
     </video>
 
+    {{-- NAVIGASI (Tidak perlu diubah, tapi path-nya disesuaikan dengan helper `url()`) --}}
     <nav class="navbar navbar-expand-lg py-2 fixed-top">
-      <div class="container">
-        <a class="navbar-brand" href="../">
-          <img
-            src="../assets/img/winntech.png"
-            alt="Winntech Logo"
-            class="logo-img"
-            loading="lazy"
-          />
-        </a>
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#mainNavbarContent"
-          aria-controls="mainNavbarContent"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="mainNavbarContent">
-          <form
-            class="d-flex position-relative my-2 my-lg-0 ms-lg-3 me-lg-auto"
-            id="navSearchFormGlobal"
-          >
-            <input
-              class="form-control rounded-cover ps-5"
-              type="search"
-              placeholder="Search News..."
-              aria-label="Search"
-              id="globalSearchInput"
-            />
-            <i
-              class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-3"
-            ></i>
-          </form>
-          <ul class="navbar-nav mx-auto">
-            <li class="nav-item">
-              <a
-                class="nav-link active"
-                aria-current="page"
-                href="/news"
-                >News</a
-              >
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/techstocks">TechStocks</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/launches">Launches</a>
-            </li>
-          </ul>
+        <div class="container">
+            <a class="navbar-brand" href="{{ url('/') }}">
+                <img src="{{ asset('assets/img/winntech.png') }}" alt="Winntech Logo" class="logo-img" loading="lazy"/>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbarContent" aria-controls="mainNavbarContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="mainNavbarContent">
+                <form class="d-flex position-relative my-2 my-lg-0 ms-lg-3 me-lg-auto" id="navSearchFormGlobal">
+                    <input class="form-control rounded-cover ps-5" type="search" placeholder="Search News..." aria-label="Search" id="globalSearchInput"/>
+                    <i class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-3"></i>
+                </form>
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item"><a class="nav-link" href="{{ url('/news') }}">News</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url('/techstocks') }}">TechStocks</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url('/launches') }}">Launches</a></li>
+                </ul>
+            </div>
         </div>
-      </div>
     </nav>
 
+
     <div class="container my-5 detail-news-page-content">
-      <div class="row justify-content-center">
-        <div class="col-lg-9 col-xl-8">
-          <article class="news-article-wrapper">
+        <div class="row justify-content-center">
+            <div class="col-lg-9 col-xl-8">
+            <article class="news-article-wrapper">
             <header class="article-header mb-4">
-              <h1 class="article-title display-4">
-                The Future of AI in Everyday Applications
-              </h1>
+              {{-- Judul Artikel dari database --}}
+              <h1 class="article-title display-4">{{ $newsArticle->title }}</h1>
               <div class="article-meta text-muted">
-                <span class="meta-item"
-                  ><i class="bi bi-person-fill me-1"></i> By Admin
-                  Winntech</span
-                >
-                <span class="meta-item ms-3"
-                  ><i class="bi bi-calendar3 me-1"></i> May 23, 2025</span
-                >
+                {{-- Nama Author dari database --}}
+                <span class="meta-item"><i class="bi bi-person-fill me-1"></i> By {{ $newsArticle->author_name }}</span>
+                {{-- Tanggal Publikasi dari database, diformat agar mudah dibaca --}}
+                <span class="meta-item ms-3"><i class="bi bi-calendar3 me-1"></i>{{ $newsArticle->created_at ? $newsArticle->created_at->format('d M Y, H:i') : '-' }}</span>
               </div>
             </header>
 
             <figure class="article-featured-image mb-4 text-center">
+              {{-- Gambar dari database --}}
               <img
-                src="https://images.unsplash.com/photo-1518770660439-4636190af475?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&h=500&q=80"
-                alt="AI Technology Abstract"
+                src="{{ Storage::url($newsArticle->image_path)}}"
+                alt="{{$newsArticle->image_caption}}"
                 class="img-fluid rounded-3 shadow"
               />
+              {{-- Tampilkan caption hanya jika ada isinya --}}
+              {{-- @if($articles->image_caption)
               <figcaption class="mt-2 image-caption-detail">
-                Abstract representation of AI neural networks.
+                {{ $articles->image_caption }}
               </figcaption>
+              @endif --}}
             </figure>
 
             <section class="article-content">
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-                in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-                nulla pariatur.
-              </p>
-              <p>
-                Excepteur sint occaecat cupidatat non proident, sunt in culpa
-                qui officia deserunt mollit anim id est laborum. Curabitur
-                pretium tinnitus lacus. Nulla ut PreMium dobroslav lacus.
-                Quisque vivimus mixtumque.
-              </p>
-
-              <h3 class="content-subheading">Subheading within the Article</h3>
-              <p>
-                Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet,
-                consectetur, adipisci velit, sed quia non numquam eius modi
-                tempora incidunt ut labore et dolore magnam aliquam quaerat
-                voluptatem. Ut enim ad minima veniam, quis nostrum
-                exercitationem ullam corporis suscipit laboriosam, nisi ut
-                aliquid ex ea commodi consequatur?
-              </p>
-
-              <blockquote class="futuristic-blockquote">
-                <p class="mb-0">
-                  "The advancement of AI will reshape industries and our daily
-                  lives in ways we are only beginning to imagine."
-                </p>
-                <footer class="blockquote-footer mt-1">
-                  Dr. Futurist in <cite title="Source Title">AI Today</cite>
-                </footer>
-              </blockquote>
-
-              <p>
-                Sed ut perspiciatis unde omnis iste natus error sit voluptatem
-                accusantium doloremque laudantium, totam rem aperiam, eaque ipsa
-                quae ab illo inventore veritatis et quasi architecto beatae
-                vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia
-                voluptas sit aspernatur aut odit aut fugit, sed quia
-                consequuntur magni dolores eos qui ratione voluptatem sequi
-                nesciunt.
-              </p>
-
-              <p>
-                At vero eos et accusamus et iusto odio dignissimos ducimus qui
-                blanditiis praesentium voluptatum deleniti atque corrupti quos
-                dolores et quas molestias excepturi sint occaecati cupiditate
-                non provident, similique sunt in culpa qui officia deserunt
-                mollitia animi, id est laborum et dolorum fuga.
-              </p>
+              {{-- Konten Artikel dari database. Gunakan {!! !!} agar tag HTML bisa dirender --}}
+              {{ $newsArticle->content }}
             </section>
 
             <hr class="article-divider my-5" />
 
+            {{-- ================================================= --}}
+            {{--                  BAGIAN KOMENTAR                  --}}
+            {{-- ================================================= --}}
             <section class="article-comments" id="commentsSection">
               <div class="comments-container mx-auto my-3">
                 <h2 class="section-title text-center mb-4">Article Comments</h2>
 
+                {{-- ... (Form untuk menambah komentar tidak diubah) ... --}}
                 <div class="text-center mb-4" id="addCommentTriggerContainer">
-                  <button
-                    class="btn btn-primary-themed"
-                    type="button"
-                    id="toggleCommentFormButton"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#commentFormContainer"
-                    aria-expanded="false"
-                    aria-controls="commentFormContainer"
-                  >
-                    <i class="bi bi-pencil-square me-2"></i>Leave a Comment
-                  </button>
+                    <button class="btn btn-primary-themed" type="button" id="toggleCommentFormButton" data-bs-toggle="collapse" data-bs-target="#commentFormContainer" aria-expanded="false" aria-controls="commentFormContainer">
+                        <i class="bi bi-pencil-square me-2"></i>Leave a Comment
+                    </button>
                 </div>
-
                 <div class="collapse" id="commentFormContainer">
-                  <div class="comment-form-wrapper mb-5">
+                    <div class="comment-form-wrapper mb-5">
                     <h4 class="comment-form-title text-center mb-3">
                       Write Your Comment
                     </h4>
@@ -238,163 +152,87 @@
                   </div>
                 </div>
 
-                <h3 class="comments-list-title mb-4">
-                  Comments (<span id="commentCountPlaceholder">3</span>)
-                </h3>
+                {{-- Jumlah komentar dinamis dari relasi 'comments' --}}
+                <h3 class="comments-list-title mb-4">Comments (<span id="commentCountPlaceholder">0</span>)</h3>
+
                 <div class="comments-list">
-                  <div class="comment-item" id="comment-1">
-                    <div class="comment-content">
-                      <div class="comment-header">
-                        <span class="commenter-name">John Doe</span>
-                        <span class="comment-timestamp"
-                          >May 21, 2025, 9:30 PM</span
-                        >
-                      </div>
-                      <p class="comment-text">
-                        This is a great article! Very insightful points about
-                        AI. Looking forward to more content like this.
-                      </p>
-                      <div class="comment-actions mt-2">
-                        <button
-                          class="btn btn-link btn-sm reply-button"
-                          type="button"
-                          data-bs-toggle="collapse"
-                          data-bs-target="#replyForm-1"
-                          aria-expanded="false"
-                          aria-controls="replyForm-1"
-                        >
-                          <i class="bi bi-reply-fill"></i> Reply
-                        </button>
-                      </div>
-                      <div
-                        class="reply-form-container collapse mt-3"
-                        id="replyForm-1"
-                      >
-                        <form class="reply-form">
-                          <h5 class="reply-form-title mb-2">
-                            Write a reply to John Doe
-                          </h5>
-                          <div class="mb-2">
-                            <input
-                              type="text"
-                              class="form-control form-control-sm form-control-futuristic"
-                              name="replyName"
-                              placeholder="Your Name"
-                              required
-                            />
-                          </div>
-                          <div class="mb-2">
-                            <textarea
-                              class="form-control form-control-sm form-control-futuristic"
-                              name="replyText"
-                              rows="3"
-                              placeholder="Your Reply..."
-                              required
-                            ></textarea>
-                          </div>
-                          <button
-                            type="submit"
-                            class="btn btn-primary-themed btn-sm"
-                          >
-                            Submit Reply
-                          </button>
-                          <button
+                  {{-- Gunakan @forelse untuk loop komentar, dengan pesan jika kosong --}}
+                  @forelse ($newsArticle->comments as $comment)
+                    {{-- <div class="comment-item" id="comment-{{ $comment->id }}"> --}}
+                    <div class="comment-item" id="">
+                      <div class="comment-content">
+                        <div class="comment-header">
+                          {{-- Nama pengomentar dari database --}}
+                          <span class="commenter-name">{{ $comment->name }}</span>
+                          {{-- Tanggal komentar dari database --}}
+                          <span class="comment-timestamp">{{ $comment->created_at->format('d M Y, H:i') }}</span>
+                        </div>
+                        {{-- Isi komentar dari database --}}
+                        <p class="comment-text">{{ $comment->comment }}</p>
+
+                        <div class="comment-actions mt-2">
+                            <button
+                            class="btn btn-link btn-sm reply-button"
                             type="button"
-                            class="btn btn-secondary-themed btn-sm ms-2"
                             data-bs-toggle="collapse"
                             data-bs-target="#replyForm-1"
-                          >
-                            Cancel
-                          </button>
-                        </form>
-                      </div>
-
-                      <div class="comment-replies mt-3">
-                        <div class="comment-item reply-item" id="comment-1-1">
-                          <div class="comment-content">
-                            <div class="comment-header">
-                              <span class="commenter-name">JaneReply</span>
-                              <span class="comment-timestamp"
-                                >May 21, 2025, 9:45 PM</span
-                              >
-                            </div>
-                            <p class="comment-text">
-                              I agree with John! The future possibilities are
-                              exciting.
-                            </p>
-                          </div>
+                            aria-expanded="false"
+                            aria-controls="replyForm-1"
+                            >
+                             <i class="bi bi-reply-fill"></i> Reply
+                            </button>
                         </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="comment-item mb-5" id="comment-2">
-                    <div class="comment-content">
-                      <div class="comment-header">
-                        <span class="commenter-name">Alice Smith</span>
-                        <span class="comment-timestamp"
-                          >May 20, 2025, 10:15 AM</span
+
+                        <div
+                            class="reply-form-container collapse mt-3"
+                            id="replyForm-1"
                         >
-                      </div>
-                      <p class="comment-text">
-                        Thanks for sharing this. I wonder about the ethical
-                        implications though.
-                      </p>
-                      <div class="comment-actions mt-2">
-                        <button
-                          class="btn btn-link btn-sm reply-button"
-                          type="button"
-                          data-bs-toggle="collapse"
-                          data-bs-target="#replyForm-2"
-                          aria-expanded="false"
-                          aria-controls="replyForm-2"
-                        >
-                          <i class="bi bi-reply-fill"></i> Reply
-                        </button>
-                      </div>
-                      <div
-                        class="reply-form-container collapse mt-3"
-                        id="replyForm-2"
-                      >
-                        <form class="reply-form">
-                          <h5 class="reply-form-title mb-2">
-                            Write a reply to Alice Smith
-                          </h5>
-                          <div class="mb-2">
-                            <input
-                              type="text"
-                              class="form-control form-control-sm form-control-futuristic"
-                              placeholder="Your Name"
-                              required
-                            />
-                          </div>
-                          <div class="mb-2">
-                            <textarea
-                              class="form-control form-control-sm form-control-futuristic"
-                              rows="3"
-                              placeholder="Your Reply..."
-                              required
-                            ></textarea>
-                          </div>
-                          <button
-                            type="submit"
-                            class="btn btn-primary-themed btn-sm"
-                          >
-                            Submit Reply
-                          </button>
-                          <button
-                            type="button"
-                            class="btn btn-secondary-themed btn-sm ms-2"
-                            data-bs-toggle="collapse"
-                            data-bs-target="#replyForm-2"
-                          >
-                            Cancel
-                          </button>
-                        </form>
-                      </div>
-                      <div class="comment-replies mt-3"></div>
+                            <form class="reply-form">
+                            <h5 class="reply-form-title mb-2">
+                                Write a reply to John Doe
+                            </h5>
+                            <div class="mb-2">
+                                <input
+                                type="text"
+                                class="form-control form-control-sm form-control-futuristic"
+                                name="replyName"
+                                placeholder="Your Name"
+                                required
+                                />
+                            </div>
+                            <div class="mb-2">
+                                <textarea
+                                class="form-control form-control-sm form-control-futuristic"
+                                name="replyText"
+                                rows="3"
+                                placeholder="Your Reply..."
+                                required
+                                ></textarea>
+                            </div>
+                            <button
+                                type="submit"
+                                class="btn btn-primary-themed btn-sm"
+                            >
+                                Submit Reply
+                            </button>
+                            <button
+                                type="button"
+                                class="btn btn-secondary-themed btn-sm ms-2"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#replyForm-1"
+                            >
+                                Cancel
+                            </button>
+                            </form>
+                        </div></div>
+                        </div>
+                  @empty
+                    <div class="text-center p-4">
+                      <p>No comments yet. Be the first to share your thoughts!</p>
                     </div>
-                  </div>
+                  @endforelse
                 </div>
+
               </div>
             </section>
           </article>
