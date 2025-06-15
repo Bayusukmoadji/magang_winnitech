@@ -90,69 +90,56 @@
     {{-- ================================================= --}}
     {{--               BAGIAN CAROUSEL (FEATURED)            --}}
     {{-- ================================================= --}}
+   <div
+    class="position-relative mb-4 mx-auto rounded-4 overflow-hidden"
+    style="max-width: 900px; height: 500px"
+>
     <div
-        class="position-relative mb-4 mx-auto rounded-4 overflow-hidden"
-        style="max-width: 900px; height: 500px"
+        id="heroCarousel"
+        class="carousel slide h-100"
+        data-bs-ride="carousel"
+        data-bs-interval="4000"
     >
-        <div
-            id="heroCarousel"
-            class="carousel slide h-100"
-            data-bs-ride="carousel"
-            data-bs-interval="4000"
-        >
-            <div class="carousel-inner h-100">
+        <div class="carousel-inner h-100">
 
-                {{-- Mulai perulangan untuk berita featured --}}
-                @foreach ($featuredArticles as $featured)
-                    {{-- Cek apakah ini item pertama untuk menambahkan class 'active' --}}
-                    <div class="carousel-item h-100 position-relative {{ $loop->first ? 'active' : '' }}">
-                        {{-- Link ke detail berita menggunakan slug --}}
-                        <a href="/news/{{ $featured->slug }}">
-                            {{-- Gambar berita, gunakan helper asset() untuk path yang benar --}}
-                            <img
-                                src="{{ asset('storage/' . $featured->image_path) }}"
-                                class="d-block w-100 h-100 object-fit-cover"
-                                alt="{{ $featured->title }}"
-                            />
-                            <div
-                                class="card-img-overlay flex-column justify-content-end align-items-start p-3 gradient-overlay"
-                            >
-                                {{-- Judul Berita --}}
-                                <h5 class="text-white mb-3 fw-semibold">
-                                    {{ $featured->title }}
-                                </h5>
-                                {{-- Author dan Tanggal Publikasi --}}
-                                <p class="text-white small m-0">
-                                    Oleh: <strong>{{ $featured->author_name }}</strong> | {{ $featured->publication_date->format('j F Y') }}
-                                </p>
-                            </div>
-                        </a>
+            @foreach ($featuredArticles as $featured)
+                <div class="carousel-item h-100 {{ $loop->first ? 'active' : '' }}">
+
+                    {{-- KUNCI PERBAIKAN: href dikembalikan menggunakan route() helper --}}
+                    <a href="{{ route('front.details', $featured->slug) }}">
+                        <img
+                            src="{{ asset('storage/' . $featured->image_path) }}"
+                            class="d-block w-100 h-100 object-fit-cover"
+                            alt="{{ $featured->title }}"
+                        />
+                    </a>
+
+                    <div class="card-img-overlay d-flex flex-column justify-content-end p-4 gradient-overlay pe-none">
+                        <h5 class="mb-2 fw-semibold text-white">
+                            {{ $featured->title }}
+                        </h5>
+                        <p class="small m-0 text-white">
+                            Oleh: <strong>{{ $featured->author_name }}</strong> | {{ $featured->publication_date->format('j F Y') }}
+                        </p>
                     </div>
-                @endforeach
-                {{-- Akhir perulangan --}}
 
-            </div>
+                </div>
+            @endforeach
 
-            <button
-                class="carousel-control-prev"
-                type="button"
-                data-bs-target="#heroCarousel"
-                data-bs-slide="prev"
-            >
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
-            </button>
-            <button
-                class="carousel-control-next"
-                type="button"
-                data-bs-target="#heroCarousel"
-                data-bs-slide="next"
-            >
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
-            </button>
         </div>
+
+        {{-- Tombol next/prev tidak perlu diubah --}}
+        <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
     </div>
+</div>
+
 
     {{-- ================================================= --}}
     {{--               BAGIAN GRID CARD (BERITA LAIN)        --}}
