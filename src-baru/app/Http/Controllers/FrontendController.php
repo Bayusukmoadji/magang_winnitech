@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ReplyNews;
 use App\Models\NewsArticle;
+use App\Models\NewsComment;
 use Illuminate\Http\Request;
 
 class FrontendController extends Controller
@@ -58,13 +60,48 @@ class FrontendController extends Controller
 
     public function details(NewsArticle $newsArticle)
     {
-        $articles = NewsArticle::all();
+        // Eager load comments DAN replies-nya sekaligus untuk performa terbaik
+        $newsArticle->load(['comments.replies' => function ($query) {
+            $query->orderBy('created_at', 'asc'); // Urutkan balasan dari yang terlama ke terbaru
+        }]);
 
-        return view('pages.detailNews', compact('newsArticle', 'articles'));
+        return view('pages.detailNews', [
+            'newsArticle' => $newsArticle
+        ]);
     }
 
     public function detailLaunches()
     {
         return view('pages.detailLaunches');
+    }
+
+    public function storeComment(Request $request)
+    {
+        $request->validate([
+            'news_article_id' => 'required|exists:news_articles,id',
+            'name' => 'required|string|max:255',
+            'comment' => 'required|string|min:3',
+        ]);
+
+        NewsComment::create($request->all());
+
+        return back()->with('success', 'Komentar Anda berhasil dipublikasikan!');
+    }
+
+
+    /**
+     * Menyimpan balasan untuk sebuah komentar.
+     */
+    public function storeReply(Request $request)
+    {
+        $request->validate([
+            'news_comment_id' => 'required|exists:news_comments,id',
+            'name' => 'required|string|max:255',
+            'comment' => 'required|string|min:3',
+        ]);
+
+        ReplyNews::create($request->all());
+
+        return back()->with('success', 'Balasan Anda berhasil dipublikasikan!');
     }
 }

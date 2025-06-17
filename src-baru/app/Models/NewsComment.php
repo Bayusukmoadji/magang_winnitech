@@ -36,4 +36,13 @@ class NewsComment extends Model
     {
         return $this->belongsTo(NewsArticle::class, 'news_article_id');
     }
+
+    /**
+     * Relasi: Satu komentar bisa memiliki banyak balasan.
+     * !!! INI BAGIAN YANG PERLU ANDA TAMBAHKAN !!!
+     */
+    public function replies()
+    {
+        return $this->hasMany(ReplyNews::class, 'news_comment_id');
+    }
 }
