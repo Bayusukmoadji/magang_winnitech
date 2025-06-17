@@ -428,6 +428,40 @@ body {
     background-color: #00d1ff !important;
 }
 
+/* ================================================ */
+/* STYLING KUSTOM UNTUK TOMBOL LIHAT/TUTUP BALASAN  */
+/* ================================================ */
+
+.toggle-replies-btn {
+    color: #a0a8b0; /* Warna abu-abu yang kalem, sama seperti meta-info */
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.8rem;
+    padding-left: 0.2rem;
+    padding-right: 0.2rem;
+    transition: color 0.2s ease-in-out;
+}
+
+.toggle-replies-btn:hover,
+.toggle-replies-btn:focus {
+    color: #00d1ff; /* Warna cyan saat di-hover */
+    text-decoration: none;
+    box-shadow: none !important;
+}
+
+/* Bagian untuk ikon panah */
+.toggle-replies-btn .bi-chevron-down {
+    transition: transform 0.35s ease; /* Transisi untuk rotasi ikon */
+    font-size: 0.9em;
+    position: relative;
+    top: -1px;
+}
+
+/* Saat balasan terbuka (expanded), putar ikonnya */
+.toggle-replies-btn[aria-expanded="true"] .bi-chevron-down {
+    transform: rotate(180deg);
+}
+
 /* ================== */
 /* Footer Styling */
 /* ================== */
@@ -504,6 +538,7 @@ body {
     letter-spacing: 0.5px;
     padding: 0.2rem 0;
     display: inline-block;
+    text-decoration: none;
 }
 .listfoot a:hover {
     color: #00d1ff !important;

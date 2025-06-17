@@ -16,23 +16,26 @@ class FrontendController extends Controller
 
     public function news()
     {
-        // Query 1: Ambil 3 berita terbaru yang ditandai sebagai "featured" untuk carousel.
-        $featuredArticles = NewsArticle::where('is_featured', true)
-            ->latest('publication_date') // Urutkan dari yang paling baru
-            ->take(3) // Ambil maksimal 3 berita
-            ->get();
+        $featuredArticles = NewsArticle::where('is_featured', true)->latest('publication_date')->take(3)->get();
+        $articles = NewsArticle::where('is_featured', false)->latest('publication_date')->paginate(8);
 
-        // Query 2: Ambil berita lainnya (yang tidak featured) dengan paginasi.
-        // Angka 8 berarti 8 berita per halaman.
-        $articles = NewsArticle::where('is_featured', false)
-            ->latest('publication_date')
-            ->paginate(8);
-
-        // 3. Mengirim kedua variabel tersebut ke view 'pages.news'
-        // Variabel ini akan bisa diakses di dalam file news.blade.php
         return view('pages.news', [
             'featuredArticles' => $featuredArticles,
             'articles'         => $articles,
+        ]);
+    }
+
+    // Method untuk halaman hasil pencarian (jika form disubmit tanpa JS)
+    public function search(Request $request)
+    {
+        $searchQuery = $request->input('query');
+        $articles = NewsArticle::where('title', 'LIKE', "%{$searchQuery}%")
+            ->latest('publication_date')
+            ->paginate(12);
+
+        return view('pages.search_results', [
+            'articles' => $articles,
+            'searchQuery' => $searchQuery
         ]);
     }
 
@@ -46,27 +49,20 @@ class FrontendController extends Controller
         return view('pages.launches');
     }
 
-    // public function detailNews(NewsArticle $newsArticle)
-    // {
-    //     // Eager load comments untuk menghindari query N+1
-    //     $newsArticle->load(['comments' => function ($query) {
-    //         $query->latest(); // Urutkan komentar dari yang terbaru
-    //     }]);
-
-    //     return view('pages.detailNews', [
-    //         'article' => $newsArticle
-    //     ]);
-    // }
 
     public function details(NewsArticle $newsArticle)
     {
-        // Eager load comments DAN replies-nya sekaligus untuk performa terbaik
-        $newsArticle->load(['comments.replies' => function ($query) {
-            $query->orderBy('created_at', 'asc'); // Urutkan balasan dari yang terlama ke terbaru
-        }]);
+        // Ambil 10 komentar pertama untuk halaman awal, diurutkan dari yang terbaru.
+        // 'with('replies')' untuk efisiensi, agar tidak ada query tambahan saat menampilkan balasan.
+        $comments = $newsArticle->comments()
+            ->with('replies')
+            ->latest()
+            ->paginate(10);
 
+        // Sekarang kita mengirim variabel 'newsArticle' DAN 'comments' ke view.
         return view('pages.detailNews', [
-            'newsArticle' => $newsArticle
+            'newsArticle' => $newsArticle,
+            'comments'    => $comments  // <-- INI YANG MENYELESAIKAN ERROR
         ]);
     }
 
@@ -103,5 +99,31 @@ class FrontendController extends Controller
         ReplyNews::create($request->all());
 
         return back()->with('success', 'Balasan Anda berhasil dipublikasikan!');
+    }
+
+    // Method baru untuk menangani request AJAX "Load More"
+    public function loadMoreComments(Request $request)
+    {
+        // Validasi untuk memastikan article_id dikirim
+        $request->validate(['article_id' => 'required|exists:news_articles,id']);
+
+        $comments = NewsComment::where('news_article_id', $request->article_id)
+            ->with('replies')
+            ->latest()
+            ->paginate(10);
+
+        // Mengembalikan data dalam format JSON
+        return response()->json($comments);
+    }
+
+    // METHOD BARU UNTUK API
+    public function apiSearch(Request $request)
+    {
+        $query = $request->input('query');
+        $articles = NewsArticle::where('title', 'LIKE', "%{$query}%")
+            ->orWhere('content', 'LIKE', "%{$query}%")
+            ->latest('publication_date')
+            ->take(12)->get();
+        return response()->json($articles);
     }
 }

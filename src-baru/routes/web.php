@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\FrontendController;
-use App\Http\Controllers\CommentController; // 1. PASTIKAN INI DITAMBAHKAN
 use Illuminate\Support\Facades\Route;
 use Livewire\Livewire;
 
@@ -22,13 +21,19 @@ Livewire::setScriptRoute(function ($handle) {
 // === FRONTEND ROUTES ===
 Route::get('/', [FrontendController::class, 'index'])->name('front.home');
 Route::get('/news', [FrontendController::class, 'news'])->name('front.news');
-Route::get('/techstocks', [FrontendController::class, 'techstocks'])->name('front.techstocks'); // Duplikat sudah dihapus
+Route::get('/techstocks', [FrontendController::class, 'techstocks'])->name('front.techstocks');
 Route::get('/launches', [FrontendController::class, 'launches'])->name('front.launches');
 Route::get('/detailNews/{newsArticle:slug}', [FrontendController::class, 'details'])->name('front.details');
 Route::get('/detailLaunches', [FrontendController::class, 'detailLaunches'])->name('front.detailLaunches');
 
-
 // === COMMENT & REPLY ROUTES ===
-// 2. DUA ROUTE INI YANG MENYELESAIKAN ERROR ANDA
 Route::post('/comments', [FrontendController::class, 'storeComment'])->name('comments.store');
 Route::post('/replies', [FrontendController::class, 'storeReply'])->name('replies.store');
+Route::get('/load-comments', [FrontendController::class, 'loadMoreComments'])->name('comments.load_more');
+
+// === SEARCH ROUTE ===
+// INI ADALAH ROUTE YANG HILANG DAN MENYEBABKAN ERROR ANDA
+Route::get('/search', [FrontendController::class, 'search'])->name('search.index');
+
+// === API ROUTES (jika digunakan oleh JS) ===
+Route::get('/api/search-news', [FrontendController::class, 'apiSearch'])->name('api.news.search');
