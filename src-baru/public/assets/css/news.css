@@ -1,12 +1,12 @@
 /* ================== */
-/* Basic Setup  */
+/* Basic Setup        */
 /* ================== */
 body {
     font-family: "Inter", sans-serif;
     background-color: #080a0f;
     color: #e0e0e0;
     margin: 0;
-    padding-top: 70px;
+    padding-top: 70px; /* Sesuaikan jika tinggi navbar berubah */
     position: relative;
     overflow-x: hidden;
     display: flex;
@@ -34,7 +34,7 @@ body {
 }
 
 /* ================== */
-/* Navbar Styling */
+/* Navbar Styling     */
 /* ================== */
 .navbar {
     background-color: rgba(15, 20, 30, 0.75) !important;
@@ -107,7 +107,7 @@ body {
 }
 
 /* ================== */
-/* Styling Konten */
+/* Styling Konten     */
 /* ================== */
 .object-fit-cover {
     object-fit: cover;
@@ -119,6 +119,34 @@ body {
     display: flex;
 }
 
+/* EFEK HOVER PADA PANAH CAROUSEL */
+#heroCarousel .carousel-control-prev,
+#heroCarousel .carousel-control-next {
+    background: none;
+    opacity: 0.6;
+    transition: opacity 0.2s ease;
+}
+#heroCarousel .carousel-control-prev:hover,
+#heroCarousel .carousel-control-next:hover {
+    opacity: 1;
+}
+#heroCarousel .carousel-control-prev:hover .carousel-control-prev-icon {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%2300d1ff'%3e%3cpath d='M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z'/%3e%3c/svg%3e");
+}
+#heroCarousel .carousel-control-next:hover .carousel-control-next-icon {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%2300d1ff'%3e%3cpath d='M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+}
+
+#heroCarousel .carousel-item img {
+    transition: transform 0.4s ease-out;
+}
+
+/* Saat link pembungkusnya di-hover, HANYA ubah skala gambarnya */
+#heroCarousel .carousel-item a:hover img {
+    transform: scale(1.05); /* Zoom gambar sebesar 5% */
+}
+
+/* STYLING KARTU BERITA */
 .card {
     overflow: hidden;
     border: 1px solid rgba(120, 150, 180, 0.15);
@@ -184,42 +212,117 @@ body {
     color: #00d1ff;
     font-size: 0.7rem;
 }
-#heroCarousel .carousel-item a {
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+/* ================== */
+/* Footer Styling     */
+/* ================== */
+.footer {
+    background-color: rgba(10, 10, 15, 0.75);
+    color: #a0a8b0;
+    padding-top: 3rem;
+    padding-bottom: 1.5rem;
+    border-top: 1px solid rgba(120, 150, 180, 0.15);
+    backdrop-filter: blur(5px);
 }
-#heroCarousel .carousel-item a:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 8px 30px rgba(0, 209, 255, 0.25);
+.footer p,
+.footer small.footer-copyright-text {
+    font-family: "Inter", sans-serif;
 }
-#heroCarousel .carousel-item img {
-    transition: transform 0.4s ease-out;
+.footer .footer-title {
+    font-family: "Bebas Neue", sans-serif;
+    font-weight: normal;
+    color: #e0e0e0 !important;
+    font-size: 1.5rem;
+    letter-spacing: 1px;
+    margin-bottom: 1rem !important;
 }
-#heroCarousel .carousel-item a:hover img {
-    transform: scale(1.05);
+.listfoot ul {
+    padding-left: 0;
+}
+.listfoot li {
+    margin-bottom: 0.4rem;
+}
+.listfoot a {
+    font-family: "Inter", sans-serif;
+    font-weight: 400;
+    font-size: 0.95rem;
+    color: #b0b8c0 !important;
+    transition: color 0.3s ease;
+    letter-spacing: normal;
+    text-decoration: none;
+}
+.listfoot a:hover {
+    color: #00d1ff !important;
 }
 
-/* ================================= */
-/* EFEK HOVER UNTUK ARROW CAROUSEL   */
-/* ================================= */
-#heroCarousel .carousel-control-prev,
-#heroCarousel .carousel-control-next {
-    background: none;
-    opacity: 0.6;
-    transition: opacity 0.2s ease;
+/* ================================================ */
+/* HALAMAN PENCARIAN & PAGINASI                     */
+/* ================================================ */
+.search-results-title {
+    font-family: "Bebas Neue", sans-serif;
+    letter-spacing: 1px;
+    font-weight: 400;
+    border-bottom: 1px solid rgba(120, 150, 180, 0.2);
+    padding-bottom: 1rem;
+}
+.no-results-message {
+    color: #a0a8b0;
+    font-style: italic;
+}
+.pagination-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+.text-sm.text-gray-700 {
+    color: #a0a8b0 !important;
+    font-size: 0.85rem;
+    margin-bottom: 0;
+}
+.pagination {
+    --bs-pagination-color: #a0a8b0;
+    --bs-pagination-bg: rgba(30, 40, 60, 0.4);
+    --bs-pagination-border-color: rgba(120, 150, 180, 0.2);
+    --bs-pagination-hover-color: #ffffff;
+    --bs-pagination-hover-bg: rgba(0, 209, 255, 0.15);
+    --bs-pagination-hover-border-color: rgba(0, 209, 255, 0.3);
+    --bs-pagination-focus-color: #ffffff;
+    --bs-pagination-focus-bg: rgba(0, 209, 255, 0.2);
+    --bs-pagination-focus-box-shadow: 0 0 0 0.25rem rgba(0, 209, 255, 0.25);
+    --bs-pagination-active-color: #080a0f;
+    --bs-pagination-active-bg: #00d1ff;
+    --bs-pagination-active-border-color: #00d1ff;
+    --bs-pagination-disabled-color: #6c757d;
+    --bs-pagination-disabled-bg: rgba(30, 40, 60, 0.2);
+    --bs-pagination-disabled-border-color: rgba(120, 150, 180, 0.1);
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.25rem;
 }
 
-#heroCarousel .carousel-control-prev:hover,
-#heroCarousel .carousel-control-next:hover {
-    opacity: 1;
+/* ================================================ */
+/* TOMBOL LOAD MORE (OUTLINE)                       */
+/* ================================================ */
+.btn-outline-themed {
+    font-family: "Bebas Neue", sans-serif;
+    font-weight: 400;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #ffffff;
+    background-color: transparent;
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    padding: 0.75rem 2rem;
+    border-radius: 10px;
+    transition: all 0.3s ease-in-out;
+    font-size: 1.2rem;
 }
-
-/* ATURAN INI MENGUBAH WARNA PANAH MENJADI CYAN SAAT HOVER */
-#heroCarousel .carousel-control-prev:hover .carousel-control-prev-icon {
-    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%2300d1ff'%3e%3cpath d='M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z'/%3e%3c/svg%3e");
-}
-
-#heroCarousel .carousel-control-next:hover .carousel-control-next-icon {
-    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%2300d1ff'%3e%3cpath d='M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+.btn-outline-themed:hover {
+    color: #00d1ff;
+    background-color: transparent;
+    border-color: #00d1ff;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 209, 255, 0.25);
 }
 
 /* ================== */
@@ -310,75 +413,22 @@ body {
     font-family: "Inter", sans-serif;
 }
 
-/* ================================================ */
-/* STYLING HALAMAN HASIL PENCARIAN & PAGINASI */
-/* ================================================ */
-.search-results-title {
-    font-family: "Bebas Neue", sans-serif;
-    letter-spacing: 1px;
-    font-weight: 400;
-    border-bottom: 1px solid rgba(120, 150, 180, 0.2);
-    padding-bottom: 1rem;
-}
-.no-results-message {
-    color: #a0a8b0;
-    font-style: italic;
-}
-.pagination {
-    --bs-pagination-color: #a0a8b0;
-    --bs-pagination-bg: rgba(30, 40, 60, 0.4);
-    --bs-pagination-border-color: rgba(120, 150, 180, 0.2);
-    --bs-pagination-hover-color: #ffffff;
-    --bs-pagination-hover-bg: rgba(0, 209, 255, 0.15);
-    --bs-pagination-hover-border-color: rgba(0, 209, 255, 0.3);
-    --bs-pagination-focus-color: #ffffff;
-    --bs-pagination-focus-bg: rgba(0, 209, 255, 0.2);
-    --bs-pagination-focus-box-shadow: 0 0 0 0.25rem rgba(0, 209, 255, 0.25);
-    --bs-pagination-active-color: #080a0f;
-    --bs-pagination-active-bg: #00d1ff;
-    --bs-pagination-active-border-color: #00d1ff;
-    --bs-pagination-disabled-color: #6c757d;
-    --bs-pagination-disabled-bg: rgba(30, 40, 60, 0.2);
-    --bs-pagination-disabled-border-color: rgba(120, 150, 180, 0.1);
-}
-
-/* ================================================ */
-/* STYLING KUSTOM UNTUK PAGINASI & LAYOUT-NYA       */
-/* ================================================ */
-
-/* Wadah utama untuk paginasi dan teks "Showing results" */
-.pagination-container {
-    display: flex;
-    flex-direction: column; /* Susun ke bawah: Teks di atas, tombol di bawah */
-    align-items: center;
-    gap: 1rem; /* Jarak antara teks dan tombol paginasi */
-}
-
-/* Mengatur style teks "Showing 1 to 8 of 9 results" */
-/* Laravel menggunakan class default ini, kita perlu menimpanya */
-.dark-theme .text-sm.text-gray-700, /* Untuk Laravel 9/10 */
-.text-sm.text-gray-700 {
-    color: #a0a8b0 !important; /* Warna abu-abu kalem */
-    font-size: 0.85rem;
-    margin-bottom: 0;
-}
-
-/* Memastikan tombol paginasi selalu di tengah dan bisa turun baris */
-.pagination {
-    justify-content: center;
-    flex-wrap: wrap; /* Izinkan item turun ke baris baru jika tidak muat */
-    gap: 0.25rem; /* Beri sedikit jarak antar tombol di mobile */
-}
-
 /* ================== */
 /* Responsive Adjustments */
 /* ================== */
 @media (max-width: 991.98px) {
-    /* ... (kode responsif Anda) ... */
+    #navSearchForm .search-input-container {
+        width: 100%;
+    }
+    .navbar .navbar-nav {
+        align-items: center;
+    }
+    .navbar .navbar-nav .nav-item {
+        margin: 0.25rem 0;
+    }
 }
 @media (max-width: 768px) {
-    /* ... (kode responsif Anda) ... */
-}
-@media (max-width: 576px) {
-    /* ... (kode responsif Anda) ... */
+    body {
+        padding-top: 60px;
+    }
 }

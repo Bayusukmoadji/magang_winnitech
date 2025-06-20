@@ -25,7 +25,6 @@ class FrontendController extends Controller
         ]);
     }
 
-    // Method untuk halaman hasil pencarian (jika form disubmit tanpa JS)
     public function search(Request $request)
     {
         $searchQuery = $request->input('query');
@@ -49,20 +48,16 @@ class FrontendController extends Controller
         return view('pages.launches');
     }
 
-
     public function details(NewsArticle $newsArticle)
     {
-        // Ambil 10 komentar pertama untuk halaman awal, diurutkan dari yang terbaru.
-        // 'with('replies')' untuk efisiensi, agar tidak ada query tambahan saat menampilkan balasan.
         $comments = $newsArticle->comments()
             ->with('replies')
             ->latest()
             ->paginate(10);
 
-        // Sekarang kita mengirim variabel 'newsArticle' DAN 'comments' ke view.
         return view('pages.detailNews', [
             'newsArticle' => $newsArticle,
-            'comments'    => $comments  // <-- INI YANG MENYELESAIKAN ERROR
+            'comments'    => $comments
         ]);
     }
 
@@ -71,52 +66,42 @@ class FrontendController extends Controller
         return view('pages.detailLaunches');
     }
 
+    // --- FUNGSI KOMENTAR & BALASAN (DENGAN PERBAIKAN KEAMANAN) ---
     public function storeComment(Request $request)
     {
-        $request->validate([
+        $validatedData = $request->validate([
             'news_article_id' => 'required|exists:news_articles,id',
             'name' => 'required|string|max:255',
             'comment' => 'required|string|min:3',
         ]);
 
-        NewsComment::create($request->all());
+        NewsComment::create($validatedData); // Diperbaiki: Menggunakan data yang sudah divalidasi
 
         return back()->with('success', 'Komentar Anda berhasil dipublikasikan!');
     }
 
-
-    /**
-     * Menyimpan balasan untuk sebuah komentar.
-     */
     public function storeReply(Request $request)
     {
-        $request->validate([
+        $validatedData = $request->validate([
             'news_comment_id' => 'required|exists:news_comments,id',
             'name' => 'required|string|max:255',
             'comment' => 'required|string|min:3',
         ]);
 
-        ReplyNews::create($request->all());
+        ReplyNews::create($validatedData); // Diperbaiki: Menggunakan data yang sudah divalidasi
 
         return back()->with('success', 'Balasan Anda berhasil dipublikasikan!');
     }
 
-    // Method baru untuk menangani request AJAX "Load More"
+    // --- METHOD API (UNTUK JAVASCRIPT) ---
     public function loadMoreComments(Request $request)
     {
-        // Validasi untuk memastikan article_id dikirim
         $request->validate(['article_id' => 'required|exists:news_articles,id']);
-
         $comments = NewsComment::where('news_article_id', $request->article_id)
-            ->with('replies')
-            ->latest()
-            ->paginate(10);
-
-        // Mengembalikan data dalam format JSON
+            ->with('replies')->latest()->paginate(10);
         return response()->json($comments);
     }
 
-    // METHOD BARU UNTUK API
     public function apiSearch(Request $request)
     {
         $query = $request->input('query');
@@ -124,6 +109,18 @@ class FrontendController extends Controller
             ->orWhere('content', 'LIKE', "%{$query}%")
             ->latest('publication_date')
             ->take(12)->get();
+        return response()->json($articles);
+    }
+
+    // !!! INI METHOD YANG HILANG !!!
+    // METHOD BARU UNTUK API LOAD MORE NEWS
+    public function loadMoreNews(Request $request)
+    {
+        $articles = NewsArticle::where('is_featured', false)
+            ->latest('publication_date')
+            ->paginate(8);
+
+        // Kembalikan hasilnya dalam format JSON
         return response()->json($articles);
     }
 }

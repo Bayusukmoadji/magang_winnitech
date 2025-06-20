@@ -37,3 +37,6 @@ Route::get('/search', [FrontendController::class, 'search'])->name('search.index
 
 // === API ROUTES (jika digunakan oleh JS) ===
 Route::get('/api/search-news', [FrontendController::class, 'apiSearch'])->name('api.news.search');
+
+// Route API untuk fitur "Load More" di halaman News
+Route::get('/api/load-more-news', [FrontendController::class, 'loadMoreNews'])->name('news.load-more-api');

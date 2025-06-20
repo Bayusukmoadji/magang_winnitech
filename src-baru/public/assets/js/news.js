@@ -1,21 +1,14 @@
-// public/assets/js/news.js (Versi Final Gabungan)
+// File: public/assets/js/news.js
 
 document.addEventListener("DOMContentLoaded", function () {
-    const searchInput = document.getElementById("globalSearchInput");
+    const loadMoreBtn = document.getElementById("load-more-news-btn");
     const articleGrid = document.querySelector(".row.g-4");
-    const paginationContainer = document.getElementById("pagination-container");
 
-    if (!articleGrid) return;
+    if (!loadMoreBtn || !articleGrid) {
+        return; // Hentikan script jika tombol atau grid tidak ada
+    }
 
-    // --- FUNGSI HELPER ---
-    const debounce = (func, delay) => {
-        let timeout;
-        return function (...args) {
-            clearTimeout(timeout);
-            timeout = setTimeout(() => func.apply(this, args), delay);
-        };
-    };
-
+    // Fungsi untuk membuat satu card artikel dari data JSON
     function createArticleCard(article) {
         const publicationDate = new Date(
             article.publication_date
@@ -24,9 +17,11 @@ document.addEventListener("DOMContentLoaded", function () {
             month: "long",
             year: "numeric",
         });
+
         const excerpt = article.excerpt || "";
         const imageUrl = `/storage/${article.image_path}`;
         const detailUrl = `/detailNews/${article.slug}`;
+        const authorName = article.author_name || "Admin";
 
         return `
             <div class="col">
@@ -38,61 +33,52 @@ document.addEventListener("DOMContentLoaded", function () {
                     <div class="card-body p-2">
                         <p class="card-text fw-semibold">${article.title}</p>
                         <p class="deskripsigrid">${excerpt}</p>
-                        <p class="news-author-line small mb-0">Author: <strong>${article.author_name}</strong></p>
+                        <p class="news-author-line small mb-0">Author: <strong>${authorName}</strong></p>
                     </div>
                 </div>
             </div>
         `;
     }
 
-    // --- LOGIKA PENCARIAN AJAX ---
-    if (searchInput) {
-        const originalArticlesHtml = articleGrid.innerHTML; // Simpan konten awal
+    // Tambahkan 'event listener' ke tombol "Load More"
+    loadMoreBtn.addEventListener("click", async function () {
+        const nextPageUrl = this.dataset.nextPageUrl;
+        if (!nextPageUrl) return;
 
-        const performAjaxSearch = async (event) => {
-            const query = event.target.value.trim();
+        this.disabled = true;
+        this.textContent = "Loading...";
 
-            if (query === "") {
-                articleGrid.innerHTML = originalArticlesHtml; // Kembalikan jika input kosong
-                if (paginationContainer)
-                    paginationContainer.style.display = "block";
-                return;
-            }
+        try {
+            // Ambil hanya nomor halaman dari URL lengkap
+            const pageQuery = new URL(nextPageUrl).searchParams.get("page");
+            // Panggil API yang sudah kita buat
+            const apiUrl = `/api/load-more-news?page=${pageQuery}`;
 
-            articleGrid.innerHTML =
-                '<p class="text-white text-center col-12">Mencari...</p>';
-            if (paginationContainer) paginationContainer.style.display = "none"; // Sembunyikan paginasi
+            const response = await fetch(apiUrl);
+            const newData = await response.json();
 
-            try {
-                const response = await fetch(
-                    `/api/search-news?query=${encodeURIComponent(query)}`
-                );
-                const articles = await response.json();
+            if (newData.data && newData.data.length > 0) {
+                newData.data.forEach((article) => {
+                    articleGrid.insertAdjacentHTML(
+                        "beforeend",
+                        createArticleCard(article)
+                    );
+                });
 
-                articleGrid.innerHTML = ""; // Kosongkan grid
-
-                if (articles.length > 0) {
-                    articles.forEach((article) => {
-                        articleGrid.insertAdjacentHTML(
-                            "beforeend",
-                            createArticleCard(article)
-                        );
-                    });
+                if (newData.next_page_url) {
+                    this.dataset.nextPageUrl = newData.next_page_url; // Perbarui URL untuk request selanjutnya
+                    this.disabled = false;
+                    this.textContent = "Load More";
                 } else {
-                    articleGrid.innerHTML =
-                        '<p class="text-white text-center col-12">Tidak ada hasil ditemukan.</p>';
+                    this.style.display = "none"; // Sembunyikan jika tidak ada halaman lagi
                 }
-            } catch (error) {
-                console.error("Pencarian gagal:", error);
-                articleGrid.innerHTML =
-                    '<p class="text-danger text-center col-12">Gagal melakukan pencarian.</p>';
+            } else {
+                this.style.display = "none"; // Sembunyikan jika tidak ada data
             }
-        };
-
-        searchInput.addEventListener("input", debounce(performAjaxSearch, 500));
-    }
-
-    // Catatan: Fungsionalitas "Load More" dengan AJAX akan lebih kompleks dan bisa berkonflik
-    // dengan paginasi standar. Untuk saat ini, kita fokus pada pencarian AJAX yang sudah berfungsi
-    // dan mempertahankan paginasi standar Laravel yang sudah robust.
+        } catch (error) {
+            console.error("Gagal memuat berita:", error);
+            this.textContent = "Gagal Memuat. Coba Lagi.";
+            this.disabled = false;
+        }
+    });
 });

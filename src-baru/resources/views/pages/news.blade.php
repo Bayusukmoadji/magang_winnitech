@@ -9,31 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Bebas+Neue&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" />
-<link rel="stylesheet" href="{{ asset('assets/css/news.css') }}?v=2">
-
- <style>
-        /* Penyesuaian Layout Paginasi */
-        .pagination-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        /* Mengatur style teks "Showing 1 to 8 of 9 results" */
-        .text-sm.text-gray-700 {
-            color: #a0a8b0 !important;
-            font-size: 0.85rem;
-            margin-bottom: 0;
-        }
-
-        /* Memastikan tombol paginasi selalu di tengah dan bisa turun baris */
-        .pagination {
-            justify-content: center !important;
-            flex-wrap: wrap !important;
-            gap: 0.5rem !important;
-        }
-    </style>
+    <link rel="stylesheet" href="{{ asset('assets/css/news.css') }}">
 </head>
 <body>
     <video autoplay muted loop playsinline id="background-video-news">
@@ -53,20 +29,10 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="mainNavbarContent">
-                <form action="{{ route('search.index') }}" method="GET" class="d-flex position-relative my-2 my-lg-0 ms-lg-3 me-lg-auto" id="navSearchForm">
+                <form action="{{ route('search.index') }}" method="GET" class="d-flex my-2 my-lg-0 ms-lg-3 me-lg-auto" id="navSearchForm">
                     <div class="search-input-container position-relative">
-                        <input
-                            class="form-control"
-                            type="search"
-                            name="query"
-                            placeholder="Cari berita..."
-                            aria-label="Search"
-                            value="{{ request('query') }}"
-                            required
-                        />
-                        <button type="submit" class="search-icon-btn">
-                            <i class="bi bi-search"></i>
-                        </button>
+                        <input class="form-control" type="search" name="query" placeholder="Cari berita..." aria-label="Search" value="{{ request('query') }}" required />
+                        <button type="submit" class="search-icon-btn"><i class="bi bi-search"></i></button>
                     </div>
                 </form>
                 <ul class="navbar-nav mx-auto">
@@ -124,116 +90,70 @@
             @endforeach
         </div>
 
-        {{-- PAGINASI --}}
-        <div class="pagination-container mt-4 pt-2 pb-4" style="border: 2px solid red;">
-    {{ $articles->links() }}
-</div>
+        {{-- BAGIAN LOAD MORE --}}
+        <div class="text-center mt-4 pt-2 pb-4" id="load-more-container">
+            @if ($articles->hasMorePages())
+                <button id="load-more-news-btn" class="btn btn-outline-themed" data-next-page-url="{{ $articles->nextPageUrl() }}">
+                    Load More
+                </button>
+            @endif
+        </div>
     </section>
 
     {{-- ====================== --}}
     {{--         FOOTER         --}}
     {{-- ====================== --}}
     <footer class="footer pt-5 border-top">
-
-<div class="container px-3 px-md-5">
-
-<div class="row justify-content-center align-items-start gy-4 gx-md-5">
-
-<div class="col-md-3 d-flex flex-column align-items-center">
-
-<div class="d-flex align-items-center justify-content-center mb-2 footer-logos-container">
-
-<img src="{{ asset('assets/img/logo.png') }}" alt="Winnicode Logo" class="img-fluid footer-logo-main" loading="lazy"/>
-
-<img src="{{ asset('assets/img/km.png') }}" alt="Kampus Merdeka Logo" class="img-fluid footer-logo-km" loading="lazy"/>
-
-<img src="{{ asset('assets/img/winntech.png') }}" alt="Winntech Logo Footer" class="img-fluid footer-logo-main" loading="lazy"/>
-
-</div>
-
-<p class="text-center mb-0 footer-description-text">
-
-The Winnicode Journalism Program is a human resource development program aimed at young men and women pursuing careers in the world of reporting.
-
-</p>
-
-</div>
-
-<div class="col-md-4 text-center">
-
-<p class="fw-semibold mb-3 footer-title">Follow us</p>
-
-<div class="social-icons-group">
-
-<div class="social-icons-row mb-2">
-
-<a href="#"><i class="bi bi-twitter-x fs-4"></i></a>
-
-<a href="#"><i class="bi bi-facebook fs-4"></i></a>
-
-<a href="#"><i class="bi bi-telegram fs-4"></i></a>
-
-<a href="#"><i class="bi bi-instagram fs-4"></i></a>
-
-</div>
-
-<div class="social-icons-row">
-
-<a href="#"><i class="bi bi-tiktok fs-4"></i></a>
-
-<a href="#"><i class="bi bi-youtube fs-4"></i></a>
-
-<a href="#"><i class="bi bi-whatsapp fs-4"></i></a>
-
-<a href="#"><i class="bi bi-line fs-4"></i></a>
-
-</div>
-
-</div>
-
-</div>
-
-<div class="col-md-3">
-
-<h5 class="fw-bold text-start footer-title">CATEGORIES</h5>
-
-<div class="listfoot">
-
-<ul class="list-unstyled">
-
-<li><a href="{{ route('front.news') }}">News</a></li>
-
-<li><a href="{{ route('front.techstocks') }}">TechStocks</a></li>
-
-<li><a href="{{ route('front.launches') }}">Launches</a></li>
-
-</ul>
-
-</div>
-
-</div>
-
-</div>
-
-<div class="text-center mt-4">
-
-<div class="p-2">
-
-<small class="footer-copyright-text">
-
-&copy; 2025 PT. Winnicode Garuda Teknologi. All rights reserved<br />
-
-by Bayu Sukmo Adji
-
-</small>
-
-</div>
-
-</div>
-
-</div>
-
-</footer>
+        <div class="container px-3 px-md-5">
+            <div class="row justify-content-center align-items-start gy-4 gx-md-5">
+                <div class="col-md-3 d-flex flex-column align-items-center">
+                    <div class="d-flex align-items-center justify-content-center mb-2 footer-logos-container">
+                        <img src="{{ asset('assets/img/logo.png') }}" alt="Winnicode Logo" class="img-fluid footer-logo-main" loading="lazy"/>
+                        <img src="{{ asset('assets/img/km.png') }}" alt="Kampus Merdeka Logo" class="img-fluid footer-logo-km" loading="lazy"/>
+                        <img src="{{ asset('assets/img/winntech.png') }}" alt="Winntech Logo Footer" class="img-fluid footer-logo-main" loading="lazy"/>
+                    </div>
+                    <p class="text-center mb-0 footer-description-text">
+                        The Winnicode Journalism Program is a human resource development program aimed at young men and women pursuing careers in the world of reporting.
+                    </p>
+                </div>
+                <div class="col-md-4 text-center">
+                    <p class="fw-semibold mb-3 footer-title">Follow us</p>
+                    <div class="social-icons-group">
+                        <div class="social-icons-row mb-2">
+                            <a href="#"><i class="bi bi-twitter-x fs-4"></i></a>
+                            <a href="#"><i class="bi bi-facebook fs-4"></i></a>
+                            <a href="#"><i class="bi bi-telegram fs-4"></i></a>
+                            <a href="#"><i class="bi bi-instagram fs-4"></i></a>
+                        </div>
+                        <div class="social-icons-row">
+                            <a href="#"><i class="bi bi-tiktok fs-4"></i></a>
+                            <a href="#"><i class="bi bi-youtube fs-4"></i></a>
+                            <a href="#"><i class="bi bi-whatsapp fs-4"></i></a>
+                            <a href="#"><i class="bi bi-line fs-4"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <h5 class="fw-bold text-start footer-title">CATEGORIES</h5>
+                    <div class="listfoot">
+                        <ul class="list-unstyled">
+                            <li><a href="{{ route('front.news') }}">News</a></li>
+                            <li><a href="{{ route('front.techstocks') }}">TechStocks</a></li>
+                            <li><a href="{{ route('front.launches') }}">Launches</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center mt-4">
+                <div class="p-2">
+                    <small class="footer-copyright-text">
+                        &copy; 2025 PT. Winnicode Garuda Teknologi. All rights reserved<br />
+                        by Bayu Sukmo Adji
+                    </small>
+                </div>
+            </div>
+        </div>
+    </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{{ asset('assets/js/news.js') }}"></script>

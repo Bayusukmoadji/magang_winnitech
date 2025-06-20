@@ -45,7 +45,7 @@
     </div>
 </form>
                 <ul class="navbar-nav mx-auto">
-                    <li class="nav-item"><a class="nav-link" href="{{ route('front.news') }}">News</a></li>
+                    <li class="nav-item"><a class="nav-link active " href="{{ route('front.news') }}">News</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ route('front.techstocks') }}">TechStocks</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ route('front.launches') }}">Launches</a></li>
                 </ul>
