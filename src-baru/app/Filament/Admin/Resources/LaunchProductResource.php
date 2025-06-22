@@ -39,18 +39,14 @@ class LaunchProductResource extends Resource
                         Forms\Components\Section::make('Detail Produk')
                             ->schema([
                                 Forms\Components\TextInput::make('title')
-                                    ->label('Nama Produk')
+                                    ->label('Judul Artikel')
                                     ->required()
                                     ->maxLength(255)
-                                    // Membuat slug otomatis saat pengguna selesai mengisi judul
                                     ->live(onBlur: true)
                                     ->afterStateUpdated(fn(Forms\Set $set, ?string $state) => $set('slug', Str::slug($state))),
 
-                                Forms\Components\TextInput::make('slug')
-                                    ->label('Slug (untuk URL)')
+                                Forms\Components\Hidden::make('slug')
                                     ->required()
-                                    ->maxLength(255)
-                                    // Memastikan slug unik, mengabaikan record saat ini (untuk edit)
                                     ->unique(LaunchProduct::class, 'slug', ignoreRecord: true),
 
                                 Forms\Components\TextInput::make('company_name')
@@ -121,7 +117,9 @@ class LaunchProductResource extends Resource
                 Tables\Columns\TextColumn::make('title')
                     ->label('Nama Produk')
                     ->searchable()
-                    ->sortable(),
+                    ->sortable()
+                    ->limit(40)
+                    ->tooltip(fn(LaunchProduct $record) => $record->title),
 
                 Tables\Columns\TextColumn::make('company_name')
                     ->label('Perusahaan')

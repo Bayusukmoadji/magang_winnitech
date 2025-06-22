@@ -32,11 +32,17 @@ Route::post('/replies', [FrontendController::class, 'storeReply'])->name('replie
 Route::get('/load-comments', [FrontendController::class, 'loadMoreComments'])->name('comments.load_more');
 
 // === SEARCH ROUTE ===
-// INI ADALAH ROUTE YANG HILANG DAN MENYEBABKAN ERROR ANDA
 Route::get('/search', [FrontendController::class, 'search'])->name('search.index');
+
 
 // === API ROUTES (jika digunakan oleh JS) ===
 Route::get('/api/search-news', [FrontendController::class, 'apiSearch'])->name('api.news.search');
 
 // Route API untuk fitur "Load More" di halaman News
 Route::get('/api/load-more-news', [FrontendController::class, 'loadMoreNews'])->name('news.load-more-api');
+
+// Route API untuk fitur "Load More" di halaman Launches
+Route::get('/api/launches/load-more', [FrontendController::class, 'loadMoreLaunches'])->name('launches.load-more-api');
+
+// Route API untuk pencarian di halaman Launches
+Route::get('/api/search-launches', [FrontendController::class, 'apiSearchLaunches'])->name('api.launches.search');

@@ -213,6 +213,48 @@ body {
     font-size: 0.7rem;
 }
 
+/* ================================================ */
+/* STYLING UNTUK INDIKATOR LOADING (RATA TENGAH)    */
+/* ================================================ */
+
+/* Lapisan overlay gelap yang menutupi seluruh layar */
+.search-loader-overlay {
+    position: fixed; /* Tetap di layar bahkan saat di-scroll */
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(8, 10, 15, 0.85); /* Background gelap transparan */
+    z-index: 9999; /* Pastikan berada di paling atas semua elemen */
+
+    /* Trik untuk membuat isinya rata tengah sempurna */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.loading-indicator {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: #a0a8b0;
+}
+
+.loading-indicator .spinner-border {
+    width: 3rem;
+    height: 3rem;
+    color: #00d1ff;
+    border-width: 0.3em;
+}
+
+.loading-indicator p {
+    margin-top: 1.5rem;
+    font-size: 1.5rem;
+    font-family: "Bebas Neue", sans-serif;
+    letter-spacing: 1.5px;
+}
+
 /* ================== */
 /* Footer Styling     */
 /* ================== */

@@ -31,9 +31,9 @@ class LaunchProduct extends Model
     /**
      * Get all of the launch product's comments.
      */
-    public function comments(): MorphMany
+    public function comments(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
-        return $this->morphMany(LaunchComment::class, 'commentable');
+        return $this->hasMany(LaunchComment::class);
     }
 
     /**

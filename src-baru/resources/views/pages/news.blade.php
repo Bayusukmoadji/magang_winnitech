@@ -17,9 +17,7 @@
         Browser Anda tidak mendukung tag video.
     </video>
 
-    {{-- ====================== --}}
-    {{--         NAVBAR         --}}
-    {{-- ====================== --}}
+    {{-- NAVBAR --}}
     <nav class="navbar navbar-expand-lg py-2 fixed-top">
         <div class="container">
             <a class="navbar-brand" href="{{ url('/') }}">
@@ -29,9 +27,17 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="mainNavbarContent">
-                <form action="{{ route('search.index') }}" method="GET" class="d-flex my-2 my-lg-0 ms-lg-3 me-lg-auto" id="navSearchForm">
+                <form class="d-flex my-2 my-lg-0 ms-lg-3 me-lg-auto" id="navSearchForm">
                     <div class="search-input-container position-relative">
-                        <input class="form-control" type="search" name="query" placeholder="Cari berita..." aria-label="Search" value="{{ request('query') }}" required />
+                        <input
+                            class="form-control"
+                            type="search"
+                            name="query"
+                            placeholder="Cari berita..."
+                            aria-label="Search"
+                            id="globalSearchInput"
+                            value="{{ request('query') }}"
+                        />
                         <button type="submit" class="search-icon-btn"><i class="bi bi-search"></i></button>
                     </div>
                 </form>
@@ -44,12 +50,10 @@
         </div>
     </nav>
 
-    {{-- ====================== --}}
-    {{--      KONTEN UTAMA      --}}
-    {{-- ====================== --}}
+    {{-- KONTEN UTAMA --}}
     <section class="container-lg my-5 text-white">
         {{-- CAROUSEL --}}
-        <div class="position-relative mb-4 mx-auto rounded-4 overflow-hidden" style="max-width: 900px; height: 500px">
+        <div class="position-relative mb-4 mx-auto rounded-4 overflow-hidden" id="carousel-container" style="max-width: 900px; height: 500px">
             <div id="heroCarousel" class="carousel slide h-100" data-bs-ride="carousel" data-bs-interval="4000">
                 <div class="carousel-inner h-100">
                     @foreach ($featuredArticles as $featured)
@@ -69,8 +73,8 @@
             </div>
         </div>
 
-        {{-- GRID BERITA --}}
-        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-4">
+        {{-- GRID BERITA DENGAN ID YANG BENAR --}}
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-4" id="news-article-grid">
             @foreach ($articles as $article)
                 <div class="col">
                     <div class="card h-100 bg-dark text-white rounded-4">
@@ -100,10 +104,8 @@
         </div>
     </section>
 
-    {{-- ====================== --}}
-    {{--         FOOTER         --}}
-    {{-- ====================== --}}
-    <footer class="footer pt-5 border-top">
+    {{-- FOOTER --}}
+     <footer class="footer pt-5 border-top">
         <div class="container px-3 px-md-5">
             <div class="row justify-content-center align-items-start gy-4 gx-md-5">
                 <div class="col-md-3 d-flex flex-column align-items-center">

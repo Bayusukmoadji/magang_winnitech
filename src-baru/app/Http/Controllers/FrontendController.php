@@ -6,6 +6,7 @@ use App\Models\ReplyNews;
 use App\Models\NewsArticle;
 use App\Models\NewsComment;
 use Illuminate\Http\Request;
+use App\Models\LaunchProduct;
 
 class FrontendController extends Controller
 {
@@ -45,7 +46,13 @@ class FrontendController extends Controller
 
     public function launches()
     {
-        return view('pages.launches');
+
+        $launches = LaunchProduct::latest('launch_date')->paginate(9);
+
+
+        return view('pages.launches', [
+            'launches' => $launches
+        ]);
     }
 
     public function details(NewsArticle $newsArticle)
@@ -66,7 +73,6 @@ class FrontendController extends Controller
         return view('pages.detailLaunches');
     }
 
-    // --- FUNGSI KOMENTAR & BALASAN (DENGAN PERBAIKAN KEAMANAN) ---
     public function storeComment(Request $request)
     {
         $validatedData = $request->validate([
@@ -88,12 +94,11 @@ class FrontendController extends Controller
             'comment' => 'required|string|min:3',
         ]);
 
-        ReplyNews::create($validatedData); // Diperbaiki: Menggunakan data yang sudah divalidasi
+        ReplyNews::create($validatedData);
 
         return back()->with('success', 'Balasan Anda berhasil dipublikasikan!');
     }
 
-    // --- METHOD API (UNTUK JAVASCRIPT) ---
     public function loadMoreComments(Request $request)
     {
         $request->validate(['article_id' => 'required|exists:news_articles,id']);
@@ -105,15 +110,27 @@ class FrontendController extends Controller
     public function apiSearch(Request $request)
     {
         $query = $request->input('query');
+
         $articles = NewsArticle::where('title', 'LIKE', "%{$query}%")
-            ->orWhere('content', 'LIKE', "%{$query}%")
             ->latest('publication_date')
-            ->take(12)->get();
+            ->take(12)
+            ->get();
+
         return response()->json($articles);
     }
 
-    // !!! INI METHOD YANG HILANG !!!
-    // METHOD BARU UNTUK API LOAD MORE NEWS
+    // METHOD UNTUK API PENCARIAN LAUNCHES
+    public function apiSearchLaunches(Request $request)
+    {
+        $query = $request->input('query');
+
+        $launches = LaunchProduct::where('title', 'LIKE', "%{$query}%")
+            ->latest('launch_date')
+            ->get();
+
+        return response()->json($launches);
+    }
+
     public function loadMoreNews(Request $request)
     {
         $articles = NewsArticle::where('is_featured', false)
@@ -121,5 +138,12 @@ class FrontendController extends Controller
             ->paginate(8);
 
         return response()->json($articles);
+    }
+
+    public function loadMoreLaunches(Request $request)
+    {
+        $launches = LaunchProduct::latest('launch_date')->paginate(9);
+
+        return response()->json($launches);
     }
 }
