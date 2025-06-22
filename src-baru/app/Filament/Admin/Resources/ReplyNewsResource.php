@@ -32,15 +32,15 @@ class ReplyNewsResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('news_comment_id')
-                    ->label('Commentnews')
-                    ->relationship('commentnews', 'name') // relasi 'article' sesuai method di model NewsComment
-                    ->required(),
-                Forms\Components\TextInput::make('name')
-                    ->required(),
-                Forms\Components\Textarea::make('comment')
-                    ->required()
-                    ->columnSpanFull(),
+                // Forms\Components\Select::make('news_comment_id')
+                //     ->label('Commentnews')
+                //     ->relationship('commentnews', 'name') // relasi 'article' sesuai method di model NewsComment
+                //     ->required(),
+                // Forms\Components\TextInput::make('name')
+                //     ->required(),
+                // Forms\Components\Textarea::make('comment')
+                //     ->required()
+                //     ->columnSpanFull(),
             ]);
     }
 
@@ -49,23 +49,31 @@ class ReplyNewsResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('commentnews.comment')
-                    ->label('Commentnews')
-                    ->sortable(),
+                    ->label('Membalas Komentar')
+                    ->searchable()
+                    ->sortable()
+                    ->limit(40)
+                    ->wrap(),
+
+                Tables\Columns\TextColumn::make('name')
+                    ->label('Nama Pembalas')
+                    ->searchable(),
+
+                Tables\Columns\TextColumn::make('comment')
+                    ->label('Isi Balasan')
+                    ->limit(50)
+                    ->wrap(),
 
                 Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->label('Tanggal')
+                    ->dateTime('d M Y, H:i')
+                    ->sortable(),
             ])
             ->filters([
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -85,7 +93,6 @@ class ReplyNewsResource extends Resource
     {
         return [
             'index' => Pages\ListReplyNews::route('/'),
-            'create' => Pages\CreateReplyNews::route('/create'),
             'edit' => Pages\EditReplyNews::route('/{record}/edit'),
         ];
     }

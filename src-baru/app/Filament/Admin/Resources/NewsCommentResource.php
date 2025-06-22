@@ -3,15 +3,13 @@
 namespace App\Filament\Admin\Resources;
 
 use App\Filament\Admin\Resources\NewsCommentResource\Pages;
-use App\Filament\Admin\Resources\NewsCommentResource\RelationManagers;
 use App\Models\NewsComment;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
+
 
 class NewsCommentResource extends Resource
 {
@@ -32,15 +30,15 @@ class NewsCommentResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('news_article_id')
-                    ->label('Article')
-                    ->relationship('article', 'title') // relasi 'article' sesuai method di model NewsComment
-                    ->required(),
-                Forms\Components\TextInput::make('name')
-                    ->required(),
-                Forms\Components\Textarea::make('comment')
-                    ->required()
-                    ->columnSpanFull(),
+                // Forms\Components\Select::make('news_article_id')
+                //     ->label('Article')
+                //     ->relationship('article', 'title')
+                //     ->required(),
+                // Forms\Components\TextInput::make('name')
+                //     ->required(),
+                // Forms\Components\Textarea::make('comment')
+                //     ->required()
+                //     ->columnSpanFull(),
             ]);
     }
 
@@ -48,16 +46,29 @@ class NewsCommentResource extends Resource
     {
         return $table
             ->columns([
+
                 Tables\Columns\TextColumn::make('article.title')
-                    ->label('Article')
+                    ->label('Artikel Berita')
+                    ->searchable()
+                    ->sortable()
+                    ->wrap(),
+
+
+                Tables\Columns\TextColumn::make('name')
+                    ->label('Nama Pengomentar')
+                    ->searchable()
                     ->sortable(),
 
+
+                Tables\Columns\TextColumn::make('comment')
+                    ->label('Isi Komentar')
+                    ->limit(50)
+                    ->wrap(),
+
+
                 Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
+                    ->label('Tanggal')
+                    ->dateTime('d M Y, H:i')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
@@ -65,7 +76,7 @@ class NewsCommentResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -85,7 +96,6 @@ class NewsCommentResource extends Resource
     {
         return [
             'index' => Pages\ListNewsComments::route('/'),
-            'create' => Pages\CreateNewsComment::route('/create'),
             'edit' => Pages\EditNewsComment::route('/{record}/edit'),
         ];
     }

@@ -32,15 +32,15 @@ class ReplyLaunchResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('launches_comment_id')
-                    ->label('Commentlaunch')
-                    ->relationship('commentlaunch', 'name') // relasi 'article' sesuai method di model NewsComment
-                    ->required(),
-                Forms\Components\TextInput::make('name')
-                    ->required(),
-                Forms\Components\Textarea::make('comment')
-                    ->required()
-                    ->columnSpanFull(),
+                // Forms\Components\Select::make('launches_comment_id')
+                //     ->label('Commentlaunch')
+                //     ->relationship('commentlaunch', 'name') // relasi 'article' sesuai method di model NewsComment
+                //     ->required(),
+                // Forms\Components\TextInput::make('name')
+                //     ->required(),
+                // Forms\Components\Textarea::make('comment')
+                //     ->required()
+                //     ->columnSpanFull(),
             ]);
     }
 

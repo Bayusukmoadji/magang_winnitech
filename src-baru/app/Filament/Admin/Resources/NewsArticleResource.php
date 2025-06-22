@@ -9,10 +9,8 @@ use Filament\Tables\Table;
 use App\Models\NewsArticle;
 use Illuminate\Support\Str;
 use Filament\Resources\Resource;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Admin\Resources\NewsArticleResource\Pages;
-use App\Filament\Admin\Resources\NewsArticleResource\RelationManagers;
+
 
 class NewsArticleResource extends Resource
 {
@@ -37,7 +35,6 @@ class NewsArticleResource extends Resource
             ->schema([
                 Forms\Components\Grid::make(3)
                     ->schema([
-                        // Kolom 1 & 2 (Span 2 kolom)
                         Forms\Components\Section::make('Konten Utama Artikel')
                             ->schema([
                                 Forms\Components\TextInput::make('title')
@@ -47,25 +44,23 @@ class NewsArticleResource extends Resource
                                     ->live(onBlur: true)
                                     ->afterStateUpdated(fn(Forms\Set $set, ?string $state) => $set('slug', Str::slug($state))),
 
-                                Forms\Components\TextInput::make('slug')
+                                Forms\Components\Hidden::make('slug')
                                     ->label('Slug (URL Friendly)')
                                     ->required()
-                                    ->maxLength(255)
-                                    ->unique(NewsArticle::class, 'slug', ignoreRecord: true), // Validasi unik, abaikan record saat ini (untuk edit)
+                                    ->unique(NewsArticle::class, 'slug', ignoreRecord: true),
 
                                 Forms\Components\Textarea::make('excerpt')
                                     ->label('Ringkasan (Excerpt)')
                                     ->rows(3)
                                     ->maxLength(65535),
 
-                                Forms\Components\RichEditor::make('content') // Menggunakan Rich Editor untuk konten
+                                Forms\Components\RichEditor::make('content')
                                     ->label('Isi Konten Lengkap')
                                     ->required()
-                                    ->columnSpanFull(), // Menggunakan lebar penuh di dalam section ini
+                                    ->columnSpanFull(),
                             ])
                             ->columnSpan(2),
 
-                        // Kolom 3 (Span 1 kolom)
                         Forms\Components\Section::make('Meta & Publikasi')
                             ->schema([
                                 Forms\Components\TextInput::make('author_name')
@@ -76,14 +71,12 @@ class NewsArticleResource extends Resource
 
                                 Forms\Components\DateTimePicker::make('publication_date')
                                     ->label('Tanggal Publikasi')
-                                    ->default(now()) // Default ke waktu sekarang
+                                    ->default(now())
                                     ->required(),
 
                                 Forms\Components\FileUpload::make('image_path')
                                     ->label('Gambar Unggulan')
-                                    ->image() // Memastikan file adalah gambar
-                                    // ->disk('public') // Tentukan disk penyimpanan (misalnya 'public')
-                                    // ->directory('news_images') // Tentukan direktori penyimpanan
+                                    ->image()
                                     ->nullable(),
 
                                 Forms\Components\TextInput::make('image_caption')
@@ -107,13 +100,17 @@ class NewsArticleResource extends Resource
             ->columns([
                 Tables\Columns\ImageColumn::make('image_path')
                     ->label('Gambar')
-                    // ->disk('public') // Sesuaikan dengan disk penyimpanan Anda
-                    ->defaultImageUrl(url('/images/placeholder.jpg')), // Ganti dengan URL gambar placeholder Anda jika ada
+
+                    ->defaultImageUrl(url('/images/placeholder.jpg')),
 
                 Tables\Columns\TextColumn::make('title')
                     ->label('Judul Artikel')
-                    ->searchable() // Memungkinkan pencarian berdasarkan judul
-                    ->sortable(), // Memungkinkan pengurutan berdasarkan judul
+                    ->searchable()
+                    ->sortable()
+                    ->limit(50)
+                    ->tooltip(function (NewsArticle $record): string {
+                        return $record->title;
+                    }),
 
                 Tables\Columns\TextColumn::make('author_name')
                     ->label('Penulis')
@@ -125,16 +122,20 @@ class NewsArticleResource extends Resource
                     ->dateTime()
                     ->sortable(),
 
-                Tables\Columns\IconColumn::make('is_featured')
+                Tables\Columns\BadgeColumn::make('is_featured')
                     ->label('Unggulan')
-                    ->boolean()
+                    ->formatStateUsing(fn(string $state): string => $state ? 'YA' : 'TIDAK')
+                    ->colors([
+                        'success' => true,
+                        'danger' => false,
+                    ])
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Dibuat Pada')
                     ->dateTime()
                     ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true), // Kolom bisa disembunyikan/ditampilkan
+                    ->toggleable(isToggledHiddenByDefault: true),
 
                 Tables\Columns\TextColumn::make('updated_at')
                     ->label('Diperbarui Pada')
@@ -145,6 +146,12 @@ class NewsArticleResource extends Resource
             ->filters([
                 Tables\Filters\TernaryFilter::make('is_featured')
                     ->label('Berita Unggulan'),
+
+                Tables\Filters\SelectFilter::make('author_name')
+                    ->label('Filter Penulis')
+                    ->options(
+                        NewsArticle::query()->distinct()->pluck('author_name', 'author_name')->all()
+                    ),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
@@ -161,7 +168,7 @@ class NewsArticleResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            // CommentsRelationManager::class,
         ];
     }
 

@@ -75,7 +75,7 @@ class FrontendController extends Controller
             'comment' => 'required|string|min:3',
         ]);
 
-        NewsComment::create($validatedData); // Diperbaiki: Menggunakan data yang sudah divalidasi
+        NewsComment::create($validatedData);
 
         return back()->with('success', 'Komentar Anda berhasil dipublikasikan!');
     }
@@ -120,7 +120,6 @@ class FrontendController extends Controller
             ->latest('publication_date')
             ->paginate(8);
 
-        // Kembalikan hasilnya dalam format JSON
         return response()->json($articles);
     }
 }
