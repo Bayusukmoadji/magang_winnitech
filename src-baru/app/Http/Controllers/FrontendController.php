@@ -68,9 +68,11 @@ class FrontendController extends Controller
         ]);
     }
 
-    public function detailLaunches()
+    public function detailLaunch(LaunchProduct $launchProduct)
     {
-        return view('pages.detailLaunches');
+        return view('pages.detailLaunches', [
+            'launch' => $launchProduct
+        ]);
     }
 
     public function storeComment(Request $request)

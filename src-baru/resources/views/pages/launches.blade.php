@@ -9,7 +9,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Bebas+Neue&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" />
-    {{-- Menggunakan helper asset() untuk path yang benar --}}
     <link rel="stylesheet" href="{{ asset('assets/css/launches.css') }}" />
 </head>
 <body>
@@ -28,22 +27,12 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="mainNavbarContent">
-<form action="{{ route('search.index') }}" method="GET" class="d-flex my-2 my-lg-0 ms-lg-3 me-lg-auto" id="navSearchForm">
-    <div class="search-input-container position-relative">
-        <input
-            class="form-control"
-            type="search"
-            name="query"
-            placeholder="Search Product..."
-            aria-label="Search"
-            id="globalSearchInput" {{-- ID SUDAH DITAMBAHKAN --}}
-            value="{{ request('query') }}"
-        />
-        <button type="submit" class="search-icon-btn">
-            <i class="bi bi-search"></i>
-        </button>
-    </div>
-</form>
+                <form action="{{ route('search.index') }}" method="GET" class="d-flex my-2 my-lg-0 ms-lg-3 me-lg-auto" id="navSearchForm">
+                    <div class="search-input-container position-relative">
+                        <input class="form-control" type="search" name="query" placeholder="Search Product..." required />
+                        <button type="submit" class="search-icon-btn"><i class="bi bi-search"></i></button>
+                    </div>
+                </form>
                 <ul class="navbar-nav mx-auto">
                     <li class="nav-item"><a class="nav-link" href="{{ route('front.news') }}">News</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ route('front.techstocks') }}">TechStocks</a></li>
@@ -59,7 +48,6 @@
 
         {{-- Grid untuk menampilkan semua produk peluncuran --}}
         <div class="row gy-4" id="launchCards">
-            {{-- Lakukan perulangan untuk setiap produk dari database --}}
             @forelse ($launches as $launch)
                 <div class="col-md-6 col-lg-4">
                     <div class="card launch-card h-100">
@@ -73,34 +61,31 @@
                             <p class="card-text launch-description">{{ $launch->short_description }}</p>
                         </div>
                         <div class="card-footer launch-card-footer">
-                            {{-- Kita akan perbaiki link ini di langkah selanjutnya --}}
-                            <a href="#" class="btn btn-sm btn-secondary-themed w-100">
+                            {{-- Link ini akan kita fungsikan di langkah selanjutnya --}}
+                            <a href="{{ route('launches.detail', $launch->slug) }}" class="btn btn-sm btn-secondary-themed w-100">
                                 Read More <i class="bi bi-arrow-right-short"></i>
                             </a>
                         </div>
                     </div>
                 </div>
             @empty
-                {{-- Pesan ini akan muncul jika tidak ada data produk di database --}}
                 <div class="col-12">
                     <p class="text-center fs-4 mt-5">Belum ada jadwal peluncuran yang tersedia.</p>
                 </div>
             @endforelse
         </div>
 
-        {{-- Paginasi --}}
+        {{-- Wadah untuk Tombol Load More --}}
         <div class="text-center mt-4 pt-2 pb-4" id="load-more-container">
-    @if ($launches->hasMorePages())
-        <button id="load-more-launches-btn" class="btn btn-outline-themed" data-next-page-url="{{ $launches->nextPageUrl() }}">
-            Load More
-        </button>
-    @endif
-</div>
+            @if ($launches->hasMorePages())
+                <button id="load-more-launches-btn" class="btn btn-outline-themed" data-next-page-url="{{ $launches->nextPageUrl() }}">
+                    Load More
+                </button>
+            @endif
+        </div>
     </div>
 
-    {{-- ====================== --}}
-    {{--         FOOTER         --}}
-    {{-- ====================== --}}
+    {{-- Footer --}}
     <footer class="footer pt-5 border-top">
     <div class="container px-3 px-md-5">
         <div class="row justify-content-center gy-5">

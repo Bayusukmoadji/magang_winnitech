@@ -24,7 +24,7 @@ Route::get('/news', [FrontendController::class, 'news'])->name('front.news');
 Route::get('/techstocks', [FrontendController::class, 'techstocks'])->name('front.techstocks');
 Route::get('/launches', [FrontendController::class, 'launches'])->name('front.launches');
 Route::get('/detailNews/{newsArticle:slug}', [FrontendController::class, 'details'])->name('front.details');
-Route::get('/detailLaunches', [FrontendController::class, 'detailLaunches'])->name('front.detailLaunches');
+Route::get('/launches/{launchProduct:slug}', [FrontendController::class, 'detailLaunch'])->name('launches.detail');
 
 // === COMMENT & REPLY ROUTES ===
 Route::post('/comments', [FrontendController::class, 'storeComment'])->name('comments.store');
