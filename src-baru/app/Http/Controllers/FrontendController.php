@@ -6,7 +6,9 @@ use App\Models\ReplyNews;
 use App\Models\NewsArticle;
 use App\Models\NewsComment;
 use Illuminate\Http\Request;
+use App\Models\LaunchComment;
 use App\Models\LaunchProduct;
+use App\Models\ReplyLaunch;
 
 class FrontendController extends Controller
 {
@@ -70,10 +72,49 @@ class FrontendController extends Controller
 
     public function detailLaunch(LaunchProduct $launchProduct)
     {
+        $comments = $launchProduct->comments()
+            ->with('replies')
+            ->latest()
+            ->paginate(10);
+
         return view('pages.detailLaunches', [
-            'launch' => $launchProduct
+            'launch'   => $launchProduct,
+            'comments' => $comments
         ]);
     }
+
+    /**
+     * Menyimpan komentar baru untuk sebuah Launch Product.
+     */
+    public function storeLaunchComment(Request $request)
+    {
+        $validatedData = $request->validate([
+            'launch_product_id' => 'required|exists:launch_products,id',
+            'name' => 'required|string|max:255',
+            'comment' => 'required|string|min:3',
+        ]);
+
+        LaunchComment::create($validatedData); // Menggunakan model LaunchComment
+
+        return back()->with('success', 'Komentar Anda berhasil dipublikasikan!');
+    }
+
+    /**
+     * Menyimpan balasan baru untuk sebuah komentar Launch.
+     */
+    public function storeLaunchReply(Request $request)
+    {
+        $validatedData = $request->validate([
+            'launches_comment_id' => 'required|exists:launches_comments,id',
+            'name' => 'required|string|max:255',
+            'comment' => 'required|string|min:3',
+        ]);
+
+        ReplyLaunch::create($validatedData);
+
+        return back()->with('success', 'Balasan Anda berhasil dipublikasikan!');
+    }
+
 
     public function storeComment(Request $request)
     {
@@ -106,6 +147,18 @@ class FrontendController extends Controller
         $request->validate(['article_id' => 'required|exists:news_articles,id']);
         $comments = NewsComment::where('news_article_id', $request->article_id)
             ->with('replies')->latest()->paginate(10);
+        return response()->json($comments);
+    }
+
+    public function loadMoreLaunchComments(Request $request)
+    {
+        $request->validate(['launch_id' => 'required|exists:launch_products,id']);
+
+        $comments = LaunchComment::where('launch_product_id', $request->launch_id)
+            ->with('replies')
+            ->latest()
+            ->paginate(10);
+
         return response()->json($comments);
     }
 

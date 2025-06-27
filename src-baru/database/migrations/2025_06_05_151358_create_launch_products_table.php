@@ -22,8 +22,8 @@ return new class extends Migration
             $table->longText('long_description')->nullable(); // Deskripsi lengkap untuk halaman detail
             $table->json('key_features')->nullable(); // Untuk menyimpan daftar fitur utama (sebagai JSON array)
             $table->json('technical_specifications')->nullable(); // Untuk menyimpan spesifikasi teknis (sebagai JSON array objek)
-            $table->string('official_site_url')->nullable(); // URL ke situs resmi produk
-            $table->timestamps(); // Kolom created_at dan updated_at otomatis
+            $table->string('official_site_url')->nullable();
+            $table->timestamps();
         });
     }
 

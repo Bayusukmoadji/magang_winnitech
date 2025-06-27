@@ -31,6 +31,10 @@ Route::post('/comments', [FrontendController::class, 'storeComment'])->name('com
 Route::post('/replies', [FrontendController::class, 'storeReply'])->name('replies.store');
 Route::get('/load-comments', [FrontendController::class, 'loadMoreComments'])->name('comments.load_more');
 
+// === LAUNCH COMMENT & REPLY ROUTES ===
+Route::post('/launches/comments', [FrontendController::class, 'storeLaunchComment'])->name('launches.comments.store');
+Route::post('/launches/replies', [FrontendController::class, 'storeLaunchReply'])->name('launches.replies.store');
+
 // === SEARCH ROUTE ===
 Route::get('/search', [FrontendController::class, 'search'])->name('search.index');
 
@@ -46,3 +50,6 @@ Route::get('/api/launches/load-more', [FrontendController::class, 'loadMoreLaunc
 
 // Route API untuk pencarian di halaman Launches
 Route::get('/api/search-launches', [FrontendController::class, 'apiSearchLaunches'])->name('api.launches.search');
+
+// Route API untuk fitur "Load More" di halaman Launches Comments
+Route::get('/api/launches/load-more-comments', [FrontendController::class, 'loadMoreLaunchComments'])->name('launches.comments.load-more-api');
