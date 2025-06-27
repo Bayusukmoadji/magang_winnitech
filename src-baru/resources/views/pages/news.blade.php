@@ -33,7 +33,7 @@
                             class="form-control"
                             type="search"
                             name="query"
-                            placeholder="Cari berita..."
+                            placeholder="Search Article..."
                             aria-label="Search"
                             id="globalSearchInput"
                             value="{{ request('query') }}"
