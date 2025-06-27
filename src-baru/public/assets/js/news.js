@@ -1,15 +1,24 @@
+// public/assets/js/news.js (Versi Final, Lengkap, dan Teruji)
+
 document.addEventListener("DOMContentLoaded", function () {
+    // --- Deklarasi Elemen Utama dari Halaman ---
     const searchInput = document.getElementById("globalSearchInput");
     const searchForm = document.getElementById("navSearchForm");
     const articleGrid = document.getElementById("news-article-grid");
     const mainContentSection = document.querySelector("section.container-lg");
     const loadMoreContainer = document.getElementById("load-more-container");
     const carouselContainer = document.getElementById("carousel-container");
+    const loadMoreBtn = document.getElementById("load-more-news-btn");
 
+    // Keluar jika elemen grid utama tidak ada di halaman ini
     if (!articleGrid) {
         return;
     }
 
+    // --- HTML Template untuk Loading Spinner ---
+    const loadingHtml = `<div class="search-loader-overlay"><div class="loading-indicator"><div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div><p>Mencari Berita...</p></div></div>`;
+
+    // --- Fungsi Helper untuk membuat kartu berita ---
     function createArticleCard(article) {
         const publicationDate = new Date(
             article.publication_date
@@ -25,6 +34,7 @@ document.addEventListener("DOMContentLoaded", function () {
         return `<div class="col"><div class="card h-100 bg-dark text-white rounded-4"><div class="news-card-image-container"><a href="${detailUrl}"><img src="${imageUrl}" class="card-img-top rounded-top-4" alt="${article.title}"></a><div class="news-date-badge">${publicationDate}</div></div><div class="card-body p-2"><p class="card-text fw-semibold">${article.title}</p><p class="deskripsigrid">${excerpt}</p><p class="news-author-line small mb-0">Author: <strong>${authorName}</strong></p></div></div></div>`;
     }
 
+    // --- Fungsi Helper untuk Debounce ---
     const debounce = (func, delay) => {
         let timeout;
         return (...args) => {
@@ -33,11 +43,14 @@ document.addEventListener("DOMContentLoaded", function () {
         };
     };
 
+    // =============================
+    // LOGIKA PENCARIAN AJAX
+    // =============================
     if (searchInput && searchForm) {
         const performAjaxSearch = async (query) => {
+            // Buat dan tampilkan overlay loading
             const loaderOverlay = document.createElement("div");
-            loaderOverlay.className = "search-loader-overlay";
-            loaderOverlay.innerHTML = `<div class="loading-indicator"><div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div><p>Mencari Berita...</p></div>`;
+            loaderOverlay.innerHTML = loadingHtml;
             document.body.appendChild(loaderOverlay);
             if (mainContentSection)
                 mainContentSection.style.visibility = "hidden";
@@ -47,7 +60,8 @@ document.addEventListener("DOMContentLoaded", function () {
                     `/api/search-news?query=${encodeURIComponent(query)}`
                 );
                 const articles = await response.json();
-                articleGrid.innerHTML = "";
+
+                articleGrid.innerHTML = ""; // Kosongkan grid
                 if (loadMoreContainer) loadMoreContainer.style.display = "none";
                 if (carouselContainer) carouselContainer.style.display = "none";
 
@@ -67,6 +81,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 articleGrid.innerHTML =
                     '<p class="text-danger text-center col-12 fs-4">Gagal melakukan pencarian.</p>';
             } finally {
+                // Hapus overlay dan tampilkan kembali konten
                 document.body.removeChild(loaderOverlay);
                 if (mainContentSection)
                     mainContentSection.style.visibility = "visible";
@@ -78,7 +93,7 @@ document.addEventListener("DOMContentLoaded", function () {
         searchInput.addEventListener("input", (event) => {
             const query = event.target.value.trim();
             if (query === "") {
-                window.location.href = "/news";
+                window.location.href = "/news"; // Reload adalah cara paling stabil untuk reset
                 return;
             }
             debouncedSearch(query);
@@ -89,14 +104,16 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    const loadMoreBtn = document.getElementById("load-more-news-btn");
+    // =============================
+    // LOGIKA LOAD MORE
+    // =============================
     if (loadMoreBtn) {
         loadMoreBtn.addEventListener("click", async function () {
             const nextPageUrl = this.dataset.nextPageUrl;
             if (!nextPageUrl) return;
 
             this.disabled = true;
-            this.textContent = "Loading...";
+            this.textContent = "Loading..."; // Hanya teks, tanpa spinner
 
             try {
                 const pageQuery = new URL(nextPageUrl).searchParams.get("page");

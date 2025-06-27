@@ -396,6 +396,15 @@ body {
     letter-spacing: 1px;
     margin-bottom: 1rem !important;
 }
+.footer .footer-title-2 {
+    font-family: "Bebas Neue", sans-serif;
+    font-weight: normal;
+    color: #e0e0e0 !important;
+    font-size: 1.5rem;
+    letter-spacing: 1px;
+    margin-bottom: 1rem !important;
+    text-align: left;
+}
 .social-icons-group {
     display: flex;
     flex-direction: column;
@@ -418,8 +427,10 @@ body {
 .social-icons-row a:hover i.bi {
     color: #00d1ff !important;
 }
+
 .listfoot ul {
     padding-left: 0;
+    text-align: left;
 }
 .listfoot li {
     margin-bottom: 0.4rem;
@@ -447,7 +458,9 @@ body {
 /* ================== */
 /* Responsive Adjustments */
 /* ================== */
+
 @media (max-width: 991.98px) {
+    /* Navbar */
     #navSearchForm .search-input-container {
         width: 100%;
     }
@@ -457,9 +470,41 @@ body {
     .navbar .navbar-nav .nav-item {
         margin: 0.25rem 0;
     }
+
+    /* Footer */
+    .footer .footer-title {
+        text-align: center !important;
+    }
+    .footer .footer-title-2 {
+        text-align: center;
+    }
+
+    .footer .listfoot ul {
+        display: inline-block;
+        padding-left: 0;
+        text-align: left;
+    }
 }
+
 @media (max-width: 768px) {
     body {
         padding-top: 60px;
+    }
+
+    .loading-indicator .spinner-border {
+        width: 3.5rem;
+        height: 3.5rem;
+    }
+    .loading-indicator p {
+        font-size: 1.2rem;
+    }
+    .footer .footer-title-2 {
+        text-align: center;
+    }
+}
+
+@media (max-width: 576px) {
+    .search-loader-overlay {
+        display: none !important;
     }
 }

@@ -123,56 +123,65 @@
 </template>
 
     {{-- FOOTER --}}
-     <footer class="footer pt-5 border-top">
-        <div class="container px-3 px-md-5">
-            <div class="row justify-content-center align-items-start gy-4 gx-md-5">
-                <div class="col-md-3 d-flex flex-column align-items-center">
-                    <div class="d-flex align-items-center justify-content-center mb-2 footer-logos-container">
-                        <img src="{{ asset('assets/img/logo.png') }}" alt="Winnicode Logo" class="img-fluid footer-logo-main" loading="lazy"/>
-                        <img src="{{ asset('assets/img/km.png') }}" alt="Kampus Merdeka Logo" class="img-fluid footer-logo-km" loading="lazy"/>
-                        <img src="{{ asset('assets/img/winntech.png') }}" alt="Winntech Logo Footer" class="img-fluid footer-logo-main" loading="lazy"/>
-                    </div>
-                    <p class="text-center mb-0 footer-description-text">
-                        The Winnicode Journalism Program is a human resource development program aimed at young men and women pursuing careers in the world of reporting.
-                    </p>
+   <footer class="footer pt-5 border-top">
+    <div class="container px-3 px-md-5">
+        <div class="row justify-content-center gy-5">
+
+            {{-- Kolom 1: Logo & Deskripsi (Dibuat lebih lebar di tablet) --}}
+            <div class="col-lg-4 col-md-12 d-flex flex-column align-items-center">
+                <div class="d-flex align-items-center justify-content-center mb-3 footer-logos-container">
+                    <img src="{{ asset('assets/img/logo.png') }}" alt="Winnicode Logo" class="img-fluid footer-logo-main" loading="lazy"/>
+                    <img src="{{ asset('assets/img/km.png') }}" alt="Kampus Merdeka Logo" class="img-fluid footer-logo-km" loading="lazy"/>
+                    <img src="{{ asset('assets/img/winntech.png') }}" alt="Winntech Logo Footer" class="img-fluid footer-logo-main" loading="lazy"/>
                 </div>
-                <div class="col-md-4 text-center">
-                    <p class="fw-semibold mb-3 footer-title">Follow us</p>
-                    <div class="social-icons-group">
-                        <div class="social-icons-row mb-2">
-                            <a href="#"><i class="bi bi-twitter-x fs-4"></i></a>
-                            <a href="#"><i class="bi bi-facebook fs-4"></i></a>
-                            <a href="#"><i class="bi bi-telegram fs-4"></i></a>
-                            <a href="#"><i class="bi bi-instagram fs-4"></i></a>
-                        </div>
-                        <div class="social-icons-row">
-                            <a href="#"><i class="bi bi-tiktok fs-4"></i></a>
-                            <a href="#"><i class="bi bi-youtube fs-4"></i></a>
-                            <a href="#"><i class="bi bi-whatsapp fs-4"></i></a>
-                            <a href="#"><i class="bi bi-line fs-4"></i></a>
-                        </div>
+                <p class="text-center mb-0 footer-description-text">
+                    The Winnicode Journalism Program is a human resource development program aimed at young men and women pursuing careers in the world of reporting.
+                </p>
+            </div>
+
+            {{-- Kolom 2: Follow Us (Rata tengah) --}}
+            <div class="col-lg-4 col-md-6 text-center">
+                <h5 class="footer-title">Follow us</h5>
+                <div class="social-icons-group">
+                    <div class="social-icons-row mb-2">
+                        <a href="#"><i class="bi bi-twitter-x fs-4"></i></a>
+                        <a href="#"><i class="bi bi-facebook fs-4"></i></a>
+                        <a href="#"><i class="bi bi-telegram fs-4"></i></a>
+                        <a href="#"><i class="bi bi-instagram fs-4"></i></a>
                     </div>
-                </div>
-                <div class="col-md-3">
-                    <h5 class="fw-bold text-start footer-title">CATEGORIES</h5>
-                    <div class="listfoot">
-                        <ul class="list-unstyled">
-                            <li><a href="{{ route('front.news') }}">News</a></li>
-                            <li><a href="{{ route('front.techstocks') }}">TechStocks</a></li>
-                            <li><a href="{{ route('front.launches') }}">Launches</a></li>
-                        </ul>
+                    <div class="social-icons-row">
+                        <a href="#"><i class="bi bi-tiktok fs-4"></i></a>
+                        <a href="#"><i class="bi bi-youtube fs-4"></i></a>
+                        <a href="#"><i class="bi bi-whatsapp fs-4"></i></a>
+                        <a href="#"><i class="bi bi-line fs-4"></i></a>
                     </div>
                 </div>
             </div>
-            <div class="text-center mt-4">
-                <div class="p-2">
-                    <small class="footer-copyright-text">
-                        &copy; 2025 PT. Winnicode Garuda Teknologi. All rights reserved<br />
-                        by Bayu Sukmo Adji
-                    </small>
+
+            {{-- Kolom 3: Kategori (Rata tengah) --}}
+            <div class="col-lg-4 col-md-6 text-center">
+                <h5 class="footer-title-2">CATEGORIES</h5>
+                <div class="listfoot">
+                    <ul class="list-unstyled">
+                        <li><a href="{{ route('front.news') }}">News</a></li>
+                        <li><a href="{{ route('front.techstocks') }}">TechStocks</a></li>
+                        <li><a href="{{ route('front.launches') }}">Launches</a></li>
+                    </ul>
                 </div>
+            </div>
+
+        </div>
+
+        {{-- Baris untuk Copyright --}}
+        <div class="text-center mt-5">
+            <div class="p-2">
+                <small class="footer-copyright-text">
+                    &copy; 2025 PT. Winnicode Garuda Teknologi. All rights reserved<br />
+                    by Bayu Sukmo Adji
+                </small>
             </div>
         </div>
+    </div>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

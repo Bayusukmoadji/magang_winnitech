@@ -306,6 +306,35 @@ body {
     box-shadow: 0 5px 15px rgba(0, 209, 255, 0.25);
 }
 
+/* ================================================ */
+/* STYLING UNTUK INDIKATOR LOADING                  */
+/* ================================================ */
+
+.loading-indicator {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 4rem 1rem;
+    color: #a0a8b0;
+    width: 100%;
+    min-height: 300px;
+}
+
+.loading-indicator .spinner-border {
+    width: 3rem;
+    height: 3rem;
+    color: #00d1ff;
+    border-width: 0.25em;
+}
+
+.loading-indicator p {
+    margin-top: 1.5rem;
+    font-size: 1.5rem;
+    font-family: "Bebas Neue", sans-serif;
+    letter-spacing: 1.5px;
+}
+
 /* ================== */
 /* Footer Styling */
 /* ================== */
@@ -443,6 +472,9 @@ body {
     .btn-secondary-themed {
         font-size: 0.8rem;
         padding: 0.4rem 1rem;
+    }
+    .search-loader-overlay {
+        display: none !important;
     }
 }
 
