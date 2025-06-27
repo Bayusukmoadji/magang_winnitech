@@ -6,7 +6,7 @@ body {
     background-color: #080a0f;
     color: #e0e0e0;
     margin: 0;
-    padding-top: 70px; /* Sesuaikan jika tinggi navbar berubah */
+    padding-top: 70px;
     position: relative;
     overflow-x: hidden;
     display: flex;
@@ -72,7 +72,6 @@ body {
     background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28200, 208, 224, 0.8%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
 }
 
-/* STYLING BARU UNTUK SEARCH BAR NAVBAR */
 #navSearchForm .search-input-container {
     width: 300px;
 }
@@ -119,7 +118,6 @@ body {
     display: flex;
 }
 
-/* EFEK HOVER PADA PANAH CAROUSEL */
 #heroCarousel .carousel-control-prev,
 #heroCarousel .carousel-control-next {
     background: none;
@@ -141,12 +139,11 @@ body {
     transition: transform 0.4s ease-out;
 }
 
-/* Saat link pembungkusnya di-hover, HANYA ubah skala gambarnya */
 #heroCarousel .carousel-item a:hover img {
-    transform: scale(1.05); /* Zoom gambar sebesar 5% */
+    transform: scale(1.05);
 }
 
-/* STYLING KARTU BERITA */
+/* STYLING CARD BERITA */
 .card {
     overflow: hidden;
     border: 1px solid rgba(120, 150, 180, 0.15);
@@ -214,30 +211,22 @@ body {
 }
 
 /* ================================================ */
-/* STYLING UNTUK INDIKATOR LOADING (RATA TENGAH)    */
+/* STYLING UNTUK INDIKATOR LOADING                  */
 /* ================================================ */
-
-/* Lapisan overlay gelap yang menutupi seluruh layar */
 .search-loader-overlay {
-    position: fixed; /* Tetap di layar bahkan saat di-scroll */
+    position: fixed;
     top: 0;
     left: 0;
     width: 100vw;
     height: 100vh;
-    background-color: rgba(8, 10, 15, 0.85); /* Background gelap transparan */
-    z-index: 9999; /* Pastikan berada di paling atas semua elemen */
-
-    /* Trik untuk membuat isinya rata tengah sempurna */
+    z-index: 9999;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
 .loading-indicator {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    text-align: center;
     color: #a0a8b0;
 }
 

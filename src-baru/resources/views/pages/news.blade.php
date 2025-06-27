@@ -104,6 +104,24 @@
         </div>
     </section>
 
+    <template id="news-card-template">
+    <div class="col">
+        <div class="card h-100 bg-dark text-white rounded-4">
+            <div class="news-card-image-container">
+                <a class="card-link" href="#">
+                    <img class="card-img-top rounded-top-4 card-image" src="" alt="">
+                </a>
+                <div class="news-date-badge"></div>
+            </div>
+            <div class="card-body p-2">
+                <p class="card-text fw-semibold card-title"></p>
+                <p class="deskripsigrid card-excerpt"></p>
+                <p class="news-author-line small mb-0">Author: <strong class="card-author"></strong></p>
+            </div>
+        </div>
+    </div>
+</template>
+
     {{-- FOOTER --}}
      <footer class="footer pt-5 border-top">
         <div class="container px-3 px-md-5">

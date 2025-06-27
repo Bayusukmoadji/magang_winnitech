@@ -39,7 +39,6 @@ class NewsComment extends Model
 
     /**
      * Relasi: Satu komentar bisa memiliki banyak balasan.
-     * !!! INI BAGIAN YANG PERLU ANDA TAMBAHKAN !!!
      */
     public function replies()
     {
