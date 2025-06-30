@@ -107,7 +107,7 @@ class NewsArticleResource extends Resource
                     ->label('Judul Artikel')
                     ->searchable()
                     ->sortable()
-                    ->limit(40)
+                    ->limit(35)
                     ->tooltip(function (NewsArticle $record): string {
                         return $record->title;
                     }),

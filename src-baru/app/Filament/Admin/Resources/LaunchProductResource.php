@@ -88,6 +88,11 @@ class LaunchProductResource extends Resource
                         // Grup kolom kanan (1/3 dari lebar)
                         Forms\Components\Section::make('Meta & Publikasi')
                             ->schema([
+
+                                Forms\Components\DatePicker::make('launch_date')
+                                    ->label('Tanggal Publikasi')
+                                    ->required(),
+
                                 Forms\Components\FileUpload::make('image_path')
                                     ->label('Gambar Produk')
                                     ->image()
@@ -101,9 +106,7 @@ class LaunchProductResource extends Resource
                                     ->maxLength(2048)
                                     ->nullable(),
 
-                                Forms\Components\DatePicker::make('launch_date')
-                                    ->label('Tanggal Publikasi')
-                                    ->required(),
+
                             ])
                             ->columnSpan(1),
                     ]),
@@ -121,7 +124,7 @@ class LaunchProductResource extends Resource
                     ->label('Nama Produk')
                     ->searchable()
                     ->sortable()
-                    ->limit(40)
+                    ->limit(35)
                     ->tooltip(fn(LaunchProduct $record) => $record->title),
 
                 Tables\Columns\TextColumn::make('company_name')
@@ -131,7 +134,7 @@ class LaunchProductResource extends Resource
 
                 Tables\Columns\TextColumn::make('launch_date')
                     ->label('Tanggal Publikasi')
-                    ->date('d M Y') // Format tanggal
+                    ->date('d M Y')
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('updated_at')
