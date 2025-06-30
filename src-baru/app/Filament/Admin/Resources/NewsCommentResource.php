@@ -69,6 +69,10 @@ class NewsCommentResource extends Resource
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Tanggal')
                     ->dateTime('d M Y, H:i')
+                    ->sortable(),
+
+                Tables\Columns\TextColumn::make('updated_at')
+                    ->dateTime('d M Y, H:i')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])

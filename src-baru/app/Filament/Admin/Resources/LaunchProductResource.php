@@ -46,6 +46,7 @@ class LaunchProductResource extends Resource
                                     ->afterStateUpdated(fn(Forms\Set $set, ?string $state) => $set('slug', Str::slug($state))),
 
                                 Forms\Components\Hidden::make('slug')
+                                    ->label('Slug (URL Friendly)')
                                     ->required()
                                     ->unique(LaunchProduct::class, 'slug', ignoreRecord: true),
 

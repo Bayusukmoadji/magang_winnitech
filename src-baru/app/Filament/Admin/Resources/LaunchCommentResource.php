@@ -32,15 +32,15 @@ class LaunchCommentResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('launch_product_id')
-                    ->label('Launch')
-                    ->relationship('launch', 'title')
-                    ->required(),
-                Forms\Components\TextInput::make('name')
-                    ->required(),
-                Forms\Components\Textarea::make('comment')
-                    ->required()
-                    ->columnSpanFull(),
+                // Forms\Components\Select::make('launch_product_id')
+                //     ->label('Launch')
+                //     ->relationship('launch', 'title')
+                //     ->required(),
+                // Forms\Components\TextInput::make('name')
+                //     ->required(),
+                // Forms\Components\Textarea::make('comment')
+                //     ->required()
+                //     ->columnSpanFull(),
             ]);
     }
 
@@ -48,24 +48,37 @@ class LaunchCommentResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('launch.title')
-                    ->label('Launch')
+                Tables\Columns\TextColumn::make('product.title')
+                    ->label('Launch Product')
+                    ->searchable()
+                    ->sortable()
+                    ->wrap()
+                    ->limit(40)
+                    ->url(fn(LaunchComment $record): string => LaunchProductResource::getUrl('edit', ['record' => $record->product])),
+
+                Tables\Columns\TextColumn::make('name')
+                    ->label('Nama Pengomentar')
+                    ->searchable()
                     ->sortable(),
 
+                Tables\Columns\TextColumn::make('comment')
+                    ->label('Isi Komentar')
+                    ->limit(50)
+                    ->wrap(),
+
                 Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->label('Tanggal')
+                    ->dateTime('d M Y, H:i')
+                    ->sortable(),
+
                 Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
+                    ->dateTime('d M Y, H:i')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
-            ->filters([
-                //
-            ])
+            ->filters([])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

@@ -44,35 +44,56 @@ class ReplyNewsResource extends Resource
             ]);
     }
 
+    // app/Filament/Admin/Resources/ReplyNewsResource.php
+
     public static function table(Table $table): Table
     {
         return $table
             ->columns([
+                // === KOLOM BARU YANG DITAMBAHKAN ===
+                // Menampilkan judul artikel berita melalui relasi bertingkat:
+                // ReplyNews -> NewsComment -> NewsArticle
+                Tables\Columns\TextColumn::make('commentnews.article.title')
+                    ->label('Artikel Berita')
+                    ->sortable()
+                    ->searchable()
+                    ->limit(30)
+                    ->wrap(),
+
+                // Menampilkan isi komentar yang dibalas (induknya)
                 Tables\Columns\TextColumn::make('commentnews.comment')
                     ->label('Membalas Komentar')
-                    ->searchable()
-                    ->sortable()
                     ->limit(40)
                     ->wrap(),
 
+                // Menampilkan nama pengirim balasan ini
                 Tables\Columns\TextColumn::make('name')
                     ->label('Nama Pembalas')
-                    ->searchable(),
+                    ->searchable()
+                    ->sortable(), // <-- Penambahan sortable untuk konsistensi
 
+                // Menampilkan isi balasan ini sendiri
                 Tables\Columns\TextColumn::make('comment')
                     ->label('Isi Balasan')
                     ->limit(50)
-                    ->wrap(),
+                    ->wrap()
+                    ->searchable(), // <-- Penambahan searchable untuk konsistensi
 
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Tanggal')
                     ->dateTime('d M Y, H:i')
                     ->sortable(),
+
+                Tables\Columns\TextColumn::make('updated_at')
+                    ->dateTime('d M Y, H:i')
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                // Di sini kita bisa menambahkan filter nanti
             ])
             ->actions([
+                // Menambahkan ViewAction untuk konsistensi
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([

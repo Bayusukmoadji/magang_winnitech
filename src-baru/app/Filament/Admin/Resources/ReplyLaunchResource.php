@@ -48,24 +48,48 @@ class ReplyLaunchResource extends Resource
     {
         return $table
             ->columns([
+
+                Tables\Columns\TextColumn::make('commentlaunch.product.title')
+                    ->label('Launch Product')
+                    ->sortable()
+                    ->searchable()
+                    ->limit(30)
+                    ->wrap(),
+
+                // Menampilkan isi komentar yang dibalas (induknya)
                 Tables\Columns\TextColumn::make('commentlaunch.comment')
-                    ->label('Commentlaunch')
+                    ->label('Membalas Komentar')
+                    ->limit(40)
+                    ->wrap(),
+
+                // Menampilkan nama pengirim balasan ini
+                Tables\Columns\TextColumn::make('name')
+                    ->label('Nama Pembalas')
+                    ->searchable()
                     ->sortable(),
 
+                // Menampilkan isi balasan ini sendiri
+                Tables\Columns\TextColumn::make('comment')
+                    ->label('Isi Balasan')
+                    ->limit(50)
+                    ->wrap()
+                    ->searchable(),
+
                 Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->label('Tanggal')
+                    ->dateTime('d M Y, H:i')
+                    ->sortable(),
+
                 Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
+                    ->dateTime('d M Y, H:i')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                // Di sini kita bisa menambahkan filter nanti
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
