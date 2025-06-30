@@ -55,9 +55,7 @@ class LaunchProductResource extends Resource
                                     ->required()
                                     ->maxLength(255),
 
-                                Forms\Components\DatePicker::make('launch_date')
-                                    ->label('Tanggal Peluncuran')
-                                    ->required(),
+
 
                                 Forms\Components\Textarea::make('short_description')
                                     ->label('Deskripsi Singkat')
@@ -88,7 +86,7 @@ class LaunchProductResource extends Resource
                             ->columnSpan(2),
 
                         // Grup kolom kanan (1/3 dari lebar)
-                        Forms\Components\Section::make('Media & Tautan')
+                        Forms\Components\Section::make('Meta & Publikasi')
                             ->schema([
                                 Forms\Components\FileUpload::make('image_path')
                                     ->label('Gambar Produk')
@@ -102,6 +100,10 @@ class LaunchProductResource extends Resource
                                     ->url() // Validasi sebagai URL
                                     ->maxLength(2048)
                                     ->nullable(),
+
+                                Forms\Components\DatePicker::make('launch_date')
+                                    ->label('Tanggal Publikasi')
+                                    ->required(),
                             ])
                             ->columnSpan(1),
                     ]),
@@ -128,7 +130,7 @@ class LaunchProductResource extends Resource
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('launch_date')
-                    ->label('Tanggal Peluncuran')
+                    ->label('Tanggal Publikasi')
                     ->date('d M Y') // Format tanggal
                     ->sortable(),
 

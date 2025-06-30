@@ -27,9 +27,11 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="mainNavbarContent">
-                <form action="{{ route('search.index') }}" method="GET" class="d-flex my-2 my-lg-0 ms-lg-3 me-lg-auto" id="navSearchForm">
+                {{-- Form ini akan ditangani oleh JS --}}
+                <form class="d-flex my-2 my-lg-0 ms-lg-3 me-lg-auto" id="navSearchForm">
                     <div class="search-input-container position-relative">
-                        <input class="form-control" type="search" name="query" placeholder="Search Product..." required />
+                        {{-- "Menambahkan id="globalSearchInput" --}}
+                        <input class="form-control" type="search" name="query" placeholder="Search Product..." required id="globalSearchInput" />
                         <button type="submit" class="search-icon-btn"><i class="bi bi-search"></i></button>
                     </div>
                 </form>
