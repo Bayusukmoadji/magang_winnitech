@@ -117,6 +117,7 @@
                                             </ul>
                                         </div>
                                     @endif
+
                                     <form action="{{ route('comments.store') }}" method="POST">
                                         @csrf
                                         <input type="hidden" name="news_article_id" value="{{ $newsArticle->id }}">
@@ -204,6 +205,8 @@
                             @endif
                         </div>
                     </section>
+
+
                 </article>
             </div>
         </div>

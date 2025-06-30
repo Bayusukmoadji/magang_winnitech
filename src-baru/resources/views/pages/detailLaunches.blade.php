@@ -107,103 +107,121 @@
         </div>
     </div>
 
-    {{-- ================================================= --}}
-    {{--         BAGIAN KOMENTAR (REPLIKA DARI NEWS)      --}}
-    {{-- ================================================= --}}
-    <section class="article-comments mt-5 pt-4" id="commentsSection">
-        <div class="comments-container mx-auto my-3">
-            <h2 class="section-title text-center mb-4">Discussion & Comments</h2>
-            <div class="text-center mb-4" id="addCommentTriggerContainer">
-                <button class="btn btn-primary-themed" type="button" data-bs-toggle="collapse" data-bs-target="#commentFormContainer" aria-expanded="false">
-                    <i class="bi bi-pencil-square me-2"></i>Leave a Comment
-                </button>
-            </div>
-            <div class="collapse" id="commentFormContainer">
-                <div class="comment-form-wrapper mb-5">
-                    <h4 class="comment-form-title text-center mb-3">Write Your Comment</h4>
-                    @if ($errors->any())
-                        <div class="alert alert-danger"><ul class="mb-0">@foreach ($errors->all() as $error)<li>{{ $error }}</li>@endforeach</ul></div>
-                    @endif
-                    <form action="{{ route('launches.comments.store') }}" method="POST">
-                        @csrf
-                        <input type="hidden" name="launch_product_id" value="{{ $launch->id }}">
-                        <div class="mb-3">
-                            <label for="commenterName" class="form-label">Your Name</label>
-                            <input type="text" class="form-control form-control-futuristic" id="commenterName" name="name" placeholder="e.g., John Doe" required value="{{ old('name') }}">
-                        </div>
-                        <div class="mb-3">
-                            <label for="commentText" class="form-label">Your Comment</label>
-                            <textarea class="form-control form-control-futuristic" id="commentText" name="comment" rows="4" placeholder="Write your comment here..." required>{{ old('comment') }}</textarea>
-                        </div>
-                        <div class="d-flex justify-content-end">
-                            <button type="button" class="btn btn-secondary-themed me-2" data-bs-toggle="collapse" data-bs-target="#commentFormContainer">Cancel</button>
-                            <button type="submit" class="btn btn-primary-themed"><i class="bi bi-chat-left-text-fill me-2"></i>Submit Comment</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-            <h3 class="comments-list-title mb-4">Comments ({{ $comments->total() }})</h3>
-            <div class="comments-list">
-                @forelse ($comments as $comment)
-                    <div class="comment-item" id="comment-{{ $comment->id }}">
-                        <div class="comment-content">
-                            <div class="comment-header">
-                                <span class="commenter-name">{{ $comment->name }}</span>
-                                <span class="comment-timestamp">{{ $comment->created_at->diffForHumans() }}</span>
-                            </div>
-                            <p class="comment-text">{{ $comment->comment }}</p>
-                            <div class="comment-actions mt-2 d-flex align-items-center">
-                                <button class="btn btn-link btn-sm reply-button" type="button" data-bs-toggle="collapse" data-bs-target="#replyForm-{{ $comment->id }}" aria-expanded="false">
-                                    <i class="bi bi-reply-fill"></i> Reply
-                                </button>
-                                @if ($comment->replies->isNotEmpty())
-                                    <span class="mx-1 text-muted">·</span>
-                                    <button class="btn btn-link btn-sm toggle-replies-btn" type="button" data-bs-toggle="collapse" data-bs-target="#replies-for-comment-{{ $comment->id }}" aria-expanded="false">
-                                        <i class="bi bi-chevron-down me-1"></i> <span class="btn-text">Lihat Balasan ({{ $comment->replies->count() }})</span>
-                                    </button>
-                                @endif
-                            </div>
-                            <div class="reply-form-container collapse mt-3" id="replyForm-{{ $comment->id }}">
-                                <form class="reply-form" action="{{ route('launches.replies.store') }}" method="POST">
-                                    @csrf
-                                    <input type="hidden" name="launches_comment_id" value="{{ $comment->id }}">
-                                    <h5 class="reply-form-title mb-2">Write a reply to {{ $comment->name }}</h5>
-                                    <div class="mb-2">
-                                        <input type="text" class="form-control form-control-sm form-control-futuristic" name="name" placeholder="Your Name" required>
-                                    </div>
-                                    <div class="mb-2">
-                                        <textarea class="form-control form-control-sm form-control-futuristic" name="comment" rows="3" placeholder="Your Reply..." required></textarea>
-                                    </div>
-                                    <button type="submit" class="btn btn-primary-themed btn-sm">Submit Reply</button>
-                                    <button type="button" class="btn btn-secondary-themed btn-sm ms-2" data-bs-toggle="collapse" data-bs-target="#replyForm-{{ $comment->id }}">Cancel</button>
-                                </form>
-                            </div>
-                        </div>
-                        <div class="replies-list ps-4 mt-3 collapse" id="replies-for-comment-{{ $comment->id }}">
-                            @foreach ($comment->replies->sortBy('created_at') as $reply)
-                                <div class="comment-item is-reply" id="reply-{{ $reply->id }}">
-                                    <div class="comment-content">
-                                        <div class="comment-header">
-                                            <span class="commenter-name">{{ $reply->name }}</span>
-                                            <span class="comment-timestamp">{{ $reply->created_at->diffForHumans() }}</span>
-                                        </div>
-                                        <p class="comment-text">{{ $reply->comment }}</p>
-                                    </div>
-                                </div>
+{{-- ================================================= --}}
+{{--         BAGIAN KOMENTAR (REPLIKA DARI NEWS)      --}}
+{{-- ================================================= --}}
+<section class="article-comments" id="commentsSection">
+    <div class="comments-container mx-auto my-3">
+        <h2 class="section-title text-center mb-4">Discussion & Comments</h2>
+
+        <div class="text-center mb-4" id="addCommentTriggerContainer">
+            <button class="btn btn-primary-themed" type="button" data-bs-toggle="collapse" data-bs-target="#commentFormContainer" aria-expanded="false">
+                <i class="bi bi-pencil-square me-2"></i>Leave a Comment
+            </button>
+        </div>
+
+        <div class="collapse" id="commentFormContainer">
+            <div class="comment-form-wrapper mb-5">
+                <h4 class="comment-form-title text-center mb-3">Write Your Comment</h4>
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul class="mb-0">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
                             @endforeach
+                        </ul>
+                    </div>
+                @endif
+
+                <form action="{{ route('launches.comments.store') }}" method="POST">
+                    @csrf
+                    <input type="hidden" name="launch_product_id" value="{{ $launch->id }}">
+                    <div class="mb-3">
+                        <label for="commenterName" class="form-label">Your Name</label>
+                        <input type="text" class="form-control form-control-futuristic" id="commenterName" name="name" placeholder="e.g., John Doe" required value="{{ old('name') }}">
+                    </div>
+                    <div class="mb-3">
+                        <label for="commentText" class="form-label">Your Comment</label>
+                        <textarea class="form-control form-control-futuristic" id="commentText" name="comment" rows="4" placeholder="Write your comment here..." required>{{ old('comment') }}</textarea>
+                    </div>
+                    {{-- PERBAIKAN: Struktur tombol disamakan --}}
+                    <div class="d-flex justify-content-end">
+                        <button type="button" class="btn btn-secondary-themed me-2" data-bs-toggle="collapse" data-bs-target="#commentFormContainer">Cancel</button>
+                        <button type="submit" class="btn btn-primary-themed"><i class="bi bi-chat-left-text-fill me-2"></i>Submit Comment</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <h3 class="comments-list-title mb-4">Comments ({{ $comments->total() }})</h3>
+
+        <div class="comments-list">
+            @forelse ($comments as $comment)
+                <div class="comment-item" id="comment-{{ $comment->id }}">
+                    <div class="comment-content">
+                        <div class="comment-header">
+                            <span class="commenter-name">{{ $comment->name }}</span>
+                            <span class="comment-timestamp">{{ $comment->created_at->diffForHumans() }}</span>
+                        </div>
+                        <p class="comment-text">{{ $comment->comment }}</p>
+                        <div class="comment-actions mt-2 d-flex align-items-center">
+                            <button class="btn btn-link btn-sm reply-button" type="button" data-bs-toggle="collapse" data-bs-target="#replyForm-{{ $comment->id }}" aria-expanded="false">
+                                <i class="bi bi-reply-fill"></i> Reply
+                            </button>
+                            @if ($comment->replies->isNotEmpty())
+                                <span class="mx-1 text-muted">·</span>
+                                <button class="btn btn-link btn-sm toggle-replies-btn" type="button" data-bs-toggle="collapse" data-bs-target="#replies-for-comment-{{ $comment->id }}" aria-expanded="false">
+                                    <i class="bi bi-chevron-down me-1"></i> <span class="btn-text">Lihat Balasan ({{ $comment->replies->count() }})</span>
+                                </button>
+                            @endif
+                        </div>
+                        <div class="reply-form-container collapse mt-3" id="replyForm-{{ $comment->id }}">
+                            <form class="reply-form" action="{{ route('launches.replies.store') }}" method="POST">
+                                @csrf
+                                <input type="hidden" name="launches_comment_id" value="{{ $comment->id }}">
+                                <h5 class="reply-form-title mb-2">Write a reply to {{ $comment->name }}</h5>
+                                <div class="mb-2">
+                                    <input type="text" class="form-control form-control-sm form-control-futuristic" name="name" placeholder="Your Name" required>
+                                </div>
+                                <div class="mb-2">
+                                    <textarea class="form-control form-control-sm form-control-futuristic" name="comment" rows="3" placeholder="Your Reply..." required></textarea>
+                                </div>
+                                {{-- PERBAIKAN: Struktur tombol disamakan --}}
+                                <button type="submit" class="btn btn-primary-themed btn-sm">Submit Reply</button>
+                                <button type="button" class="btn btn-secondary-themed btn-sm ms-2" data-bs-toggle="collapse" data-bs-target="#replyForm-{{ $comment->id }}">Cancel</button>
+                            </form>
                         </div>
                     </div>
-                @empty
-                    <div class="text-center p-4"><p>No comments yet. Be the first to share your thoughts!</p></div>
-                @endforelse
-            </div>
-            @if ($comments->hasMorePages())
-                <div class="text-center mt-4" id="load-more-container">
-                    <button id="load-more-comments-launches" class="btn btn-primary-themed" data-page="2" data-launch-id="{{ $launch->id }}">Load More Comments</button>
+                    <div class="replies-list ps-4 mt-3 collapse" id="replies-for-comment-{{ $comment->id }}">
+                        @foreach ($comment->replies->sortBy('created_at') as $reply)
+                            <div class="comment-item is-reply" id="reply-{{ $reply->id }}">
+                                <div class="comment-content">
+                                    <div class="comment-header">
+                                        <span class="commenter-name">{{ $reply->name }}</span>
+                                        <span class="comment-timestamp">{{ $reply->created_at->diffForHumans() }}</span>
+                                    </div>
+                                    <p class="comment-text">{{ $reply->comment }}</p>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
                 </div>
-            @endif
+            @empty
+                <div class="text-center p-4">
+                    <p>No comments yet. Be the first to share your thoughts!</p>
+                </div>
+            @endforelse
         </div>
-    </section>
+
+        @if ($comments->hasMorePages())
+            <div class="text-center mt-4" id="load-more-container">
+                <button id="load-more-comments-launches" class="btn btn-primary-themed" data-page="2" data-launch-id="{{ $launch->id }}">
+                    Load More Comments
+                </button>
+            </div>
+        @endif
+    </div>
+</section>
 
     {{-- Footer --}}
     <footer class="footer pt-5 border-top">
