@@ -9,9 +9,15 @@ use Illuminate\Http\Request;
 use App\Models\LaunchComment;
 use App\Models\LaunchProduct;
 use App\Models\ReplyLaunch;
+use App\Http\Traits\CommentCensor;
+
 
 class FrontendController extends Controller
 {
+
+    use CommentCensor;
+
+
     public function index()
     {
         return view('index');
@@ -94,6 +100,9 @@ class FrontendController extends Controller
             'comment' => 'required|string|min:3',
         ]);
 
+        $validatedData['comment'] = $this->censorComment($validatedData['comment']);
+
+
         LaunchComment::create($validatedData); // Menggunakan model LaunchComment
 
         return back()->with('success', 'Komentar Anda berhasil dipublikasikan!');
@@ -110,6 +119,8 @@ class FrontendController extends Controller
             'comment' => 'required|string|min:3',
         ]);
 
+        $validatedData['comment'] = $this->censorComment($validatedData['comment']);
+
         ReplyLaunch::create($validatedData);
 
         return back()->with('success', 'Balasan Anda berhasil dipublikasikan!');
@@ -124,6 +135,8 @@ class FrontendController extends Controller
             'comment' => 'required|string|min:3',
         ]);
 
+        $validatedData['comment'] = $this->censorComment($validatedData['comment']);
+
         NewsComment::create($validatedData);
 
         return back()->with('success', 'Komentar Anda berhasil dipublikasikan!');
@@ -136,6 +149,8 @@ class FrontendController extends Controller
             'name' => 'required|string|max:255',
             'comment' => 'required|string|min:3',
         ]);
+
+        $validatedData['comment'] = $this->censorComment($validatedData['comment']);
 
         ReplyNews::create($validatedData);
 
