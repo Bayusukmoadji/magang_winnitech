@@ -54,7 +54,9 @@ class FrontendController extends Controller
 
     public function launches()
     {
-        $launches = LaunchProduct::orderBy('launch_date', 'asc')->paginate(9);
+
+        $launches = LaunchProduct::latest('launch_date',)->paginate(9);
+
 
         return view('pages.launches', [
             'launches' => $launches
